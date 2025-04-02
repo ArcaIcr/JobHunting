@@ -40,5 +40,7 @@ session_start();
       </div>
     </a>
   </div>
+
+  <?php include '../components/footer.php'; ?>
 </body>
 </html>

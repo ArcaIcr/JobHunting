@@ -79,5 +79,7 @@ if (isset($_GET['job-name']) && isset($_GET['location'])) {
       <?php endif; ?>
     </section>
   <?php endif; ?>
+
+  <?php include '../components/footer.php'; ?>
 </body>
 </html>

@@ -26,5 +26,8 @@ session_start();
       console.log("Home page loaded successfully");
     });
   </script>
+
+  
+    <?php include '../../components/footer.php'; ?>
 </body>
 </html>
