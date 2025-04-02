@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+
+.sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar ul li:hover {
+    background: #34495e;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-btn {
+    padding: 10px 15px;
+    background: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.add-btn:hover {
+    background: #2980b9;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #34495e;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+/* Action buttons */
+button {
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.edit {
+    background: #f1c40f;
+    color: white;
+}
+
+.delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.edit:hover {
+    background: #d4ac0d;
+}
+
+.delete:hover {
+    background: #c0392b;
+}
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Vacancy Management</title>
+   
+   
+</head>
+<body>
+    <div class="sidebar">
+        <h2>ADMIN</h2>
+        <ul>
+
+            <li><a href="adminhome.html">Cooperation</a></li>
+            <li><a href="adminvacancy.html">Vacancy</a></li>
+            <li><a href="adminemployee.html">Employee</a></li>
+            <li><a href="adminapplicants.html">Applicants</a></li>
+            <li><a href="adminmanageuser.html">Manage Users</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2>Vacancy</h2>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Search...">
+            </div>
+        </header>
+
+        <div class="content">
+            <button id="addVacancy" class="add-btn">+ Add Job Vacancy</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Occupation Title</th>
+                        <th>Require No. of Employees</th>
+                        <th>Salaries</th>
+                        <th>Duration of Employment</th>
+                        <th>Qualification/Work Experience</th>
+                        <th>Job Description</th>
+                        <th>Preferred Sex</th>
+                        <th>Sector of Vacancy</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="vacancyList">
+                    <!-- Vacancy data will be injected here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const vacancyList = document.getElementById("vacancyList");
+    const searchInput = document.getElementById("search");
+    const addVacancyBtn = document.getElementById("addVacancy");
+
+    // Sample Vacancy Data (Can be replaced with database integration)
+    let vacancies = [
+        {
+            company: "URC",
+            title: "ISD",
+            employees: "6",
+            salary: "15000",
+            duration: "Jan 30",
+            qualification: "Two year Experience",
+            description: "We are looking for bachelor of science in information technology.",
+            preferredSex: "Male/Female",
+            sector: "Yes"
+        },
+        {
+            company: "URC",
+            title: "Accounting",
+            employees: "1",
+            salary: "15000",
+            duration: "May 20",
+            qualification: "Two years Experience",
+            description: "We are looking for bachelor of science in Accountancy",
+            preferredSex: "Female",
+            sector: "Yes"
+        }
+    ];
+
+    // Function to render the vacancy list
+    function renderVacancies() {
+        vacancyList.innerHTML = "";
+        vacancies.forEach((vacancy, index) => {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${vacancy.company}</td>
+                <td>${vacancy.title}</td>
+                <td>${vacancy.employees}</td>
+                <td>${vacancy.salary}</td>
+                <td>${vacancy.duration}</td>
+                <td>${vacancy.qualification}</td>
+                <td>${vacancy.description}</td>
+                <td>${vacancy.preferredSex}</td>
+                <td>${vacancy.sector}</td>
+                <td>
+                    <button class="edit" onclick="editVacancy(${index})"><i class="fas fa-edit"></i></button>
+                    <button class="delete" onclick="deleteVacancy(${index})"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            vacancyList.appendChild(row);
+        });
+    }
+
+    // Function to delete a vacancy
+    window.deleteVacancy = function (index) {
+        if (confirm("Are you sure you want to delete this vacancy?")) {
+            vacancies.splice(index, 1);
+            renderVacancies();
+        }
+    };
+
+    // Function to edit a vacancy
+    window.editVacancy = function (index) {
+        let newTitle = prompt("Enter new job title:", vacancies[index].title);
+        let newEmployees = prompt("Enter number of employees required:", vacancies[index].employees);
+        let newSalary = prompt("Enter salary:", vacancies[index].salary);
+        let newDuration = prompt("Enter duration of employment:", vacancies[index].duration);
+        let newQualification = prompt("Enter qualification/work experience:", vacancies[index].qualification);
+        let newDescription = prompt("Enter job description:", vacancies[index].description);
+        let newPreferredSex = prompt("Enter preferred sex:", vacancies[index].preferredSex);
+        let newSector = prompt("Enter sector of vacancy:", vacancies[index].sector);
+
+        if (newTitle && newEmployees && newSalary && newDuration && newQualification && newDescription && newPreferredSex && newSector) {
+            vacancies[index] = { 
+                ...vacancies[index], 
+                title: newTitle, 
+                employees: newEmployees, 
+                salary: newSalary, 
+                duration: newDuration, 
+                qualification: newQualification, 
+                description: newDescription, 
+                preferredSex: newPreferredSex, 
+                sector: newSector 
+            };
+            renderVacancies();
+        }
+    };
+
+    
+    addVacancyBtn.addEventListener("click", function () {
+        let company = prompt("Enter company name:");
+        let title = prompt("Enter job title:");
+        let employees = prompt("Enter number of employees required:");
+        let salary = prompt("Enter salary:");
+        let duration = prompt("Enter duration of employment:");
+        let qualification = prompt("Enter qualification/work experience:");
+        let description = prompt("Enter job description:");
+        let preferredSex = prompt("Enter preferred sex:");
+        let sector = prompt("Enter sector of vacancy:");
+
+        if (company && title && employees && salary && duration && qualification && description && preferredSex && sector) {
+            vacancies.push({ company, title, employees, salary, duration, qualification, description, preferredSex, sector });
+            renderVacancies();
+        } else {
+            alert("All fields are required!");
+        }
+    });
+
+    // Function to filter/search vacancies
+    searchInput.addEventListener("input", function () {
+        let filter = searchInput.value.toLowerCase();
+        let rows = vacancyList.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            let titleCell = row.getElementsByTagName("td")[1];
+            if (titleCell) {
+                let title = titleCell.textContent.toLowerCase();
+                row.style.display = title.includes(filter) ? "" : "none";
+            }
+        }
+    });
+
+    // Initial render
+    renderVacancies();
+});
+
+    </script>
+</body>
+</html>
