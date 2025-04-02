@@ -6,7 +6,7 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trabaho Nasipit - Agusan Banana Shippers Multi-Purpose Cooperative</title>
+  <title>Trabaho Nasipit - FICCO NASIPIT</title>
   <style>
     /* Basic Reset and Variables */
     * {
@@ -38,7 +38,7 @@ session_start();
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       z-index: 100;
       width: 100%;
     }
@@ -59,7 +59,7 @@ session_start();
     }
     /* Main Content */
     .main-content {
-      margin-top: 100px; /* Leaves space for header */
+      margin-top: 100px; /* Space for fixed header */
       width: 100%;
       padding: 2rem;
       display: flex;
@@ -71,7 +71,7 @@ session_start();
       border-radius: 8px;
       max-width: 600px;
       width: 100%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
     .content-container h2 {
@@ -107,23 +107,15 @@ session_start();
   </style>
 </head>
 <body>
-  <header>
-    <a href="#" class="logo">trabahosanasipit <span>.</span></a>
-    <nav class="navbar">
-      <a href="home.php">Home</a>
-      <a href="findjob.php">Job Search</a>
-      <a href="cooperation.php">Cooperation</a>
-      <a href="contact.php">Contact</a>
-      <a href="login.php">Login</a>
-      <a href="signup.php">Register</a>
-    </nav>
-  </header>
+ <?php include '../../components/header.php'; ?>
   <main class="main-content">
     <div class="content-container">
-      <h2>Agusan Banana Shippers Multi-Purpose Cooperative</h2>
-      <span>Address: X9C2+HPW PPA Office, Nasipit, 8602 Agusan Del Norte</span>
-      <p>Contact No.: 0921 965 3955</p>
-      <p>We empower our members and promote sustainable agricultural practices in Agusan Del Norte.</p>
+      <h2>FICCO NASIPIT</h2>
+      <span>Address: X8PV+5PJ, Nasipit Port Rd, Nasipit, Agusan Del Norte</span>
+      <p>Contact No.: 0625656899</p>
+      <p>
+        FICCO NASIPIT provides innovative solutions for community development and trade, supporting local businesses and promoting economic growth.
+      </p>
     </div>
   </main>
 </body>

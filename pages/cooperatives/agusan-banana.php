@@ -6,7 +6,7 @@ session_start();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trabaho Nasipit - Agong-ong Watershed Multi-Purpose Cooperative</title>
+  <title>Trabaho Nasipit - Agusan Banana Shippers Multi-Purpose Cooperative</title>
   <style>
     /* Basic Reset and Variables */
     * {
@@ -59,7 +59,7 @@ session_start();
     }
     /* Main Content */
     .main-content {
-      margin-top: 100px; /* Space for fixed header */
+      margin-top: 100px; /* Leaves space for header */
       width: 100%;
       padding: 2rem;
       display: flex;
@@ -107,26 +107,13 @@ session_start();
   </style>
 </head>
 <body>
-  <header>
-    <a href="#" class="logo">trabahosanasipit <span>.</span></a>
-    <nav class="navbar">
-      <a href="home.php">Home</a>
-      <a href="findjob.php">Job Search</a>
-      <a href="cooperation.php">Cooperation</a>
-      <a href="contact.php">Contact</a>
-      <a href="login.php">Login</a>
-      <a href="signup.php">Register</a>
-    </nav>
-  </header>
+ <?php include '../../components/header.php'; ?>
   <main class="main-content">
     <div class="content-container">
-      <h2>Agong-ong Watershed Multi-Purpose Cooperative</h2>
-      <span>National Road, District 4, Barangay Amontay, Nasipit, 8602</span>
+      <h2>Agusan Banana Shippers Multi-Purpose Cooperative</h2>
+      <span>Address: X9C2+HPW PPA Office, Nasipit, 8602 Agusan Del Norte</span>
       <p>Contact No.: 0921 965 3955</p>
-      <p>
-        Welcome to Awampco. We provide comprehensive services aimed at community 
-        development and sustainable growth. Join us in empowering our community.
-      </p>
+      <p>We empower our members and promote sustainable agricultural practices in Agusan Del Norte.</p>
     </div>
   </main>
 </body>

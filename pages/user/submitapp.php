@@ -186,18 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </style>
     </head>
     <body>
-        <header>
-            <a href="#" class="logo">trabahosanasipit <span>.</span></a>
-            <nav class="navbar">
-                <a href="home.php">Home</a>
-                <a href="findjob.php">Job Search</a>
-                <a href="cooperation.php">Cooperation</a>
-                <a href="contact.php">Contact</a>
-                <a href="login.php">Login</a>
-                <a href="signup.php">Register</a>
-            </nav>
-        </header>
         
+     <?php include '../../components/header.php'; ?>
         <h2 class="text-center">Submit Application</h2>
         
         <!-- Display PHP message -->
