@@ -23,8 +23,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['password'])) {
                 // Set session variables (or any other login logic)
                 $_SESSION['loggedInUser'] = $user;
-                // Redirect to personal info or dashboard page
-                header("Location: PI.php");
+                
+                // Role-based redirection
+                // When implementing dashboards, ensure that these pages exist.
+                // Employers will be redirected to employer_dashboard.php,
+                // while jobseekers will be redirected to jobseeker_dashboard.php.
+                if ($user['role'] === 'employer') {
+                    header("Location: employer_dashboard.php");
+                } else {
+                    header("Location: jobseeker_dashboard.php");
+                }
                 exit;
             } else {
                 $error = "Incorrect password. Please try again.";
@@ -35,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error = "An error occurred. Please try again later.";
     }
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
