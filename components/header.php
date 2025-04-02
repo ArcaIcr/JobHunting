@@ -6,11 +6,11 @@
 <header>
   <a href="#" class="logo">trabahosanasipit <span>.</span></a>
   <nav class="navbar">
-    <a href="../../home.php">Home</a>
-    <a href="../findjob.php">Job Search</a>
-    <a href="../cooperation.php">Cooperation</a>
-    <a href="../contact.php">Contact</a>
-    <a href="../user/login.php">Login</a>
-    <a href="../user/signup.php">Register</a>
+    <a href="/pages/home/home.php">Home</a>
+    <a href="/pages/findjob.php">Job Search</a>
+    <a href="/pages/cooperation.php">Cooperation</a>
+    <a href="/pages/contact.php">Contact</a>
+    <a href="/pages/user/login.php">Login</a>
+    <a href="/pages/user/signup.php">Register</a>
   </nav>
 </header>

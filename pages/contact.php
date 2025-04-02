@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </style>
 </head>
 <body>
- <?php include '../../components/header.php'; ?>
+ <?php include '../components/header.php'; ?>
   <section class="contact-section">
     <div class="contact-container">
       <h2>Contact Us</h2>
