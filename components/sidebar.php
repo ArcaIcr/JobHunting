@@ -34,12 +34,12 @@ $role = $_SESSION['loggedInUser']['role'] ?? '';
           </a>
         </li>
         <!-- Logout Button -->
-        <li>
-          <a href="/logout.php">
+        <div class="logout-container">
+         <a href="/components/logout.php">
             <i class="fas fa-sign-out-alt"></i>
             <span class="link-text">Logout</span>
-          </a>
-        </li>
+         </a>
+        </div>
       </ul>
     <?php elseif ($role === 'employer'): ?>
       <ul>
@@ -73,6 +73,13 @@ $role = $_SESSION['loggedInUser']['role'] ?? '';
             <span class="link-text">Company Profile</span>
           </a>
         </li>
+        <!-- Logout Button -->
+        <div class="logout-container">
+         <a href="/components/logout.php">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="link-text">Logout</span>
+         </a>
+        </div>
       </ul>
     <?php else: ?>
       <p>No dashboard links available.</p>
