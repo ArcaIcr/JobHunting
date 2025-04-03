@@ -1,95 +1,68 @@
 /* assets/css/jobseeker.css */
 
-/* Ensure the full viewport is used */
-html, body {
+/* Root variables */
+:root {
+  --bg: #f7f9fc;
+  --sidebar-bg: #1f2937;
+  --sidebar-hover: #374151;
+  --primary: #3b82f6;
+  --text-dark: #111827;
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+}
+
+* {
   margin: 0;
   padding: 0;
-  height: 100%;
+  box-sizing: border-box;
 }
 
-/* Base styles for dashboard pages */
-body {
+html, body {
+  height: 100%;
+  background: var(--bg);
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f7f9fc;
-  color: #111827;
-  display: block; /* Prevent global flex centering */
+  color: var(--text-dark);
 }
 
-/* Dashboard Container: Sidebar + Main Content */
-.dashboard-container {
+/* ===== Top Bar (Full Width) ===== */
+.dashboard-top-bar {
   display: flex;
-  height: 100%;
-}
-
-/* Sidebar styling */
-.sidebar {
-  width: 240px;
-  background: #1f2937;
-  color: white;
-  padding: 20px 15px;
-  /* Ensure sidebar takes full height */
-  min-height: 100%;
-  overflow-y: auto;
-}
-
-.sidebar-nav ul {
-  list-style: none;
-  margin-top: 1rem;
-}
-
-.sidebar-nav li {
-  margin-bottom: 1rem;
-}
-
-.sidebar-nav a {
-  text-decoration: none;
-  color: #d1d5db;
-  padding: 10px 15px;
-  display: block;
-  border-radius: 8px;
-  transition: background 0.2s ease;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.sidebar-nav a:hover,
-.sidebar-nav a.active {
-  background: #374151;
-  color: white;
-}
-
-/* Main content area */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Top Bar (Dashboard header) */
-.top-bar {
-  background: #fff;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  justify-content: space-between;
+  background: #fff;
+  padding: 1rem 2rem;
+  box-shadow: var(--card-shadow);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
+/* Group the left side items (button + brand name) */
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.left-group h2 {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+
+/* Search Bar in Top Bar */
 .search-bar input {
   border: 1px solid #ddd;
   border-radius: 20px;
-  padding: 8px 15px;
+  padding: 0.5rem 1rem;
   font-size: 0.9rem;
   width: 200px;
 }
 
+/* User Profile in Top Bar */
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .user-profile img {
@@ -99,60 +72,122 @@ body {
   object-fit: cover;
 }
 
-/* Dashboard content (below top bar) */
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+/* ===== Main Wrapper for Sidebar + Content ===== */
+.dashboard-wrapper {
+  display: flex;
+  height: calc(100% - 64px); /* if top bar is ~64px tall */
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: var(--sidebar-bg);
+  color: #fff;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+  width: 60px;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav ul {
+  list-style: none;
+  padding: 1rem;
+}
+
+.sidebar-nav li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #d1d5db;
+  padding: 0.8rem 1rem;
+  border-radius: var(--border-radius);
+  transition: background 0.2s;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.sidebar-nav a:hover {
+  background: var(--sidebar-hover);
+  color: #fff;
+}
+
+/* Hide the link text if collapsed */
+.sidebar.collapsed .link-text {
+  display: none;
+}
+
+/* Center icons if collapsed */
+.sidebar.collapsed a {
+  justify-content: center;
+}
+
+/* ===== Main Content ===== */
 .dashboard-content {
-  padding: 20px;
   flex: 1;
+  padding: 2rem;
   overflow-y: auto;
 }
 
 .dashboard-content h1 {
   font-size: 1.8rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 /* Stats Cards */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
 }
 
 .card {
   background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s;
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .card h3 {
-  color: #3b82f6;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
 }
 
 .card p {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--text-dark);
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
-    padding: 15px;
-  }
-  
   .search-bar input {
-    width: 160px;
+    width: 150px;
   }
-  
   .stats {
     grid-template-columns: 1fr;
   }
