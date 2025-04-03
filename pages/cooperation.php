@@ -7,15 +7,12 @@ session_start();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabaho Nasipit - Cooperation</title>
-  <!-- Link to external CSS -->
   <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
-  <!-- Include header component -->
   <?php include '../components/header.php'; ?>
-
   <div class="container">
-    <a href="agong-ong.php" class="card-link">
+    <a href="cooperatives/agong-ong.php" class="card-link">
       <div class="card" style="animation-delay: 0.3s;">
         <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Awampco Icon">
         <h2>Agong-ong Watershed Multi-Purpose Cooperative (Awampco)</h2>
@@ -23,7 +20,7 @@ session_start();
         <p>Contact No.: 0921 965 3955</p>
       </div>
     </a>
-    <a href="agusan-banana.php" class="card-link">
+    <a href="cooperatives/agusan-banana.php" class="card-link">
       <div class="card" style="animation-delay: 0.6s;">
         <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="Agusan Banana Icon">
         <h2>Agusan Banana Shippers Multi-Purpose Cooperative</h2>
@@ -31,7 +28,7 @@ session_start();
         <p>Contact No.: 0921 965 3955</p>
       </div>
     </a>
-    <a href="ficco-nasipit.php" class="card-link">
+    <a href="cooperatives/ficco-nasipit.php" class="card-link">
       <div class="card" style="animation-delay: 0.9s;">
         <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="FICCO Icon">
         <h2>FICCO NASIPIT</h2>
@@ -40,7 +37,6 @@ session_start();
       </div>
     </a>
   </div>
-
   <?php include '../components/footer.php'; ?>
 </body>
 </html>
