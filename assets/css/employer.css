@@ -1,0 +1,184 @@
+/* assets/css/employer.css */
+
+/* Root variables (customize colors as desired) */
+:root {
+    --bg: #f7f9fc;
+    --sidebar-bg: #1f2937;
+    --sidebar-hover: #374151;
+    --primary: #e76f51; /* Different accent color, for example */
+    --text-dark: #111827;
+    --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+  }
+  
+  /* ===== Top Bar (Full Width) ===== */
+  .dashboard-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 1rem 2rem;
+    box-shadow: var(--card-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .left-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .left-group h2 {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+  }
+  
+  /* Search Bar in Top Bar */
+  .search-bar input {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    width: 200px;
+  }
+  
+  /* User Profile in Top Bar */
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Sidebar Toggle Button */
+  .sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-dark);
+  }
+  
+  /* ===== Main Wrapper for Sidebar + Content ===== */
+  .dashboard-wrapper {
+    display: flex;
+    height: calc(100% - 64px);
+    overflow: hidden;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    background: var(--sidebar-bg);
+    color: #fff;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+  }
+  
+  .sidebar.collapsed {
+    width: 60px;
+  }
+  
+  /* Sidebar Navigation */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .nav-links {
+    flex: 1;
+    padding: 1rem;
+  }
+  
+  .sidebar-nav li {
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #d1d5db;
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-radius);
+    transition: background 0.2s;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .sidebar-nav a:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+  }
+  
+  /* Hide the link text if collapsed */
+  .sidebar.collapsed .link-text {
+    display: none;
+  }
+  
+  /* Center icons if collapsed */
+  .sidebar.collapsed a {
+    justify-content: center;
+  }
+  
+  /* Logout Container (bottom of sidebar) */
+  .logout-container {
+    padding: 1rem;
+    border-top: 1px solid var(--sidebar-hover);
+  }
+  
+  /* ===== Main Content ===== */
+  .dashboard-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .dashboard-content h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Cards / Sections */
+  .card {
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .search-bar input {
+      width: 150px;
+    }
+  }
+  
