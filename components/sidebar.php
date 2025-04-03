@@ -33,6 +33,13 @@ $role = $_SESSION['loggedInUser']['role'] ?? '';
             <span class="link-text">Saved Jobs</span>
           </a>
         </li>
+        <!-- Logout Button -->
+        <li>
+          <a href="/logout.php">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="link-text">Logout</span>
+          </a>
+        </li>
       </ul>
     <?php elseif ($role === 'employer'): ?>
       <ul>
