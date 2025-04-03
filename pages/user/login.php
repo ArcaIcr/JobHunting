@@ -24,14 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Set session variables (or any other login logic)
                 $_SESSION['loggedInUser'] = $user;
                 
-                // Role-based redirection
-                // When implementing dashboards, ensure that these pages exist.
-                // Employers will be redirected to employer_dashboard.php,
-                // while jobseekers will be redirected to jobseeker_dashboard.php.
+                // Role-based redirection to the respective dashboard
                 if ($user['role'] === 'employer') {
-                    header("Location: employer_dashboard.php");
+                    header("Location: /pages/dashboard/employer/index.php");
                 } else {
-                    header("Location: jobseeker_dashboard.php");
+                    header("Location: /pages/dashboard/jobseeker/index.php");
                 }
                 exit;
             } else {
