@@ -1,26 +1,30 @@
 <?php
 // pages/dashboard/employer/post_job.php
-session_start();
+
+// Start session only if none exists
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../../../lib/auth.php';
 requireRole('employer');
 
 // Include the jobs model file that contains addJob()
 require_once '../../../lib/models/jobs_model.php';
 
-// If form is submitted, handle logic here...
+// If form is submitted, handle the logic here
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $jobTitle       = $_POST['jobTitle'] ?? '';
-  $jobDescription = $_POST['jobDescription'] ?? '';
-  $location       = $_POST['location'] ?? '';
-  $employerId     = $_SESSION['loggedInUser']['id']; // Get employer ID from session
+    $jobTitle       = $_POST['jobTitle'] ?? '';
+    $jobDescription = $_POST['jobDescription'] ?? '';
+    $location       = $_POST['location'] ?? '';
+    $employerId     = $_SESSION['loggedInUser']['id']; // Get employer ID from session
 
-  if (addJob($jobTitle, $jobDescription, $location, $employerId)) {
-      $successMessage = "Job posted successfully!";
-  } else {
-      $errorMessage = "Failed to post job. Please try again.";
-  }
+    if (addJob($jobTitle, $jobDescription, $location, $employerId)) {
+        $successMessage = "Job posted successfully!";
+    } else {
+        $errorMessage = "Failed to post job. Please try again.";
+    }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,21 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <header class="dashboard-top-bar">
-    <div class="left-group">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2>TrabahoNasipit</h2>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search...">
-    </div>
-    <div class="user-profile">
-      <img src="/assets/images/profile.png" alt="User">
-      <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['username']); ?></span>
-    </div>
-  </header>
+  <?php include '../../../components/d-header.php'; ?>
 
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>

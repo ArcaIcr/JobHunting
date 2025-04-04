@@ -32,21 +32,7 @@ $jobs = getAllJobsForEmployer($employerId);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <header class="dashboard-top-bar">
-    <div class="left-group">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2>TrabahoNasipit</h2>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search...">
-    </div>
-    <div class="user-profile">
-      <img src="/assets/images/profile.png" alt="User">
-      <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['username']); ?></span>
-    </div>
-  </header>
+ <?php include '../../../components/d-header.php'; ?>
 
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>

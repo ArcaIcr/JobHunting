@@ -94,21 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <!-- Top Bar -->
-  <header class="dashboard-top-bar">
-    <div class="left-group">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2>TrabahoNasipit</h2>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search...">
-    </div>
-    <div class="user-profile">
-      <img src="/assets/images/profile.png" alt="User">
-      <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['username']); ?></span>
-    </div>
-  </header>
+  <?php include '../../../components/d-header.php'; ?>
 
   <!-- Wrapper for Sidebar + Content -->
   <div class="dashboard-wrapper">
