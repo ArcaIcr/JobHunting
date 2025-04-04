@@ -235,7 +235,7 @@ form.card textarea {
   color: #721c24;
 }
 
-/* Form Card (already defined above, but ensuring consistency) */
+/* Form Card (ensuring consistency) */
 form.card div {
   margin-bottom: 1rem;
 }
@@ -267,4 +267,64 @@ form.card button {
 
 form.card button:hover {
   background-color: #0056b3;
+}
+
+/* ===== Additional Styling for Dashboard Overview (Index Page) ===== */
+
+/* Statistics Section */
+.stats-container {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  flex: 1;
+  text-align: center;
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Links */
+.quick-links {
+  margin-bottom: 2rem;
+}
+
+.quick-links a {
+  display: inline-block;
+  margin-right: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.quick-links a:hover {
+  background: #d65a3f; /* A darker shade of primary */
+}
+
+/* Recent Activity Section */
+.recent-activity {
+  background: #fff;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.recent-activity ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.recent-activity li {
+  margin-bottom: 0.5rem;
 }
