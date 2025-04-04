@@ -20,5 +20,6 @@ session_start();
       <p>We empower our members and promote sustainable agricultural practices in Agusan Del Norte.</p>
     </div>
   </main>
+  <?php include '../../components/footer.php'; ?>
 </body>
 </html>

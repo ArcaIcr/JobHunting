@@ -22,5 +22,6 @@ session_start();
       </p>
     </div>
   </main>
+  <?php include '../../components/footer.php'; ?>
 </body>
 </html>
