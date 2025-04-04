@@ -9,17 +9,18 @@ require_once '../../../lib/models/jobs_model.php';
 
 // If form is submitted, handle logic here...
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $jobTitle = $_POST['jobTitle'] ?? '';
+  $jobTitle       = $_POST['jobTitle'] ?? '';
   $jobDescription = $_POST['jobDescription'] ?? '';
-  $location = $_POST['location'] ?? '';
+  $location       = $_POST['location'] ?? '';
+  $employerId     = $_SESSION['loggedInUser']['id']; // Get employer ID from session
 
-  // Attempt to add the job to the database
-  if (addJob($jobTitle, $jobDescription, $location)) {
-    $successMessage = "Job posted successfully!";
+  if (addJob($jobTitle, $jobDescription, $location, $employerId)) {
+      $successMessage = "Job posted successfully!";
   } else {
-    $errorMessage = "Failed to post job. Please try again.";
+      $errorMessage = "Failed to post job. Please try again.";
   }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -3,6 +3,18 @@
 session_start();
 require_once '../../../lib/auth.php';
 requireRole('employer');
+
+// Include the model file that contains getApplicationsForEmployer()
+require_once '../../../lib/models/jobs_model.php';
+
+// Get the logged-in employer's ID from the session
+$employerId = $_SESSION['loggedInUser']['id'] ?? null;
+if (!$employerId) {
+    die("Employer ID not found in session.");
+}
+
+// Fetch all applications for jobs posted by this employer
+$applications = getApplicationsForEmployer($employerId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,18 +55,20 @@ requireRole('employer');
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>John Doe</td>
-            <td>Software Engineer</td>
-            <td>2025-03-12</td>
-            <td>Under Review</td>
-          </tr>
-          <tr>
-            <td>Jane Smith</td>
-            <td>UI/UX Designer</td>
-            <td>2025-03-08</td>
-            <td>Interview Scheduled</td>
-          </tr>
+          <?php if (!empty($applications)) : ?>
+            <?php foreach ($applications as $app) : ?>
+              <tr>
+                <td><?php echo htmlspecialchars($app['applicant_name']); ?></td>
+                <td><?php echo htmlspecialchars($app['job_title']); ?></td>
+                <td><?php echo htmlspecialchars($app['date_applied']); ?></td>
+                <td><?php echo htmlspecialchars($app['status']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else : ?>
+            <tr>
+              <td colspan="4">No applications found.</td>
+            </tr>
+          <?php endif; ?>
         </tbody>
       </table>
     </main>

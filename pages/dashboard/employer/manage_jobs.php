@@ -7,17 +7,21 @@ requireRole('employer');
 // Include the jobs model file
 require_once '../../../lib/models/jobs_model.php';
 
+// Get employer ID from session
+$employerId = $_SESSION['loggedInUser']['id'];
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jobTitle       = $_POST['job_title'] ?? '';
     $jobLocation    = $_POST['location'] ?? '';
     $jobDescription = $_POST['description'] ?? '';
     
-    addJob($jobTitle, $jobDescription, $jobLocation);
+    // Insert the job with the employer_id
+    addJob($jobTitle, $jobDescription, $jobLocation, $employerId);
 }
 
-// Fetch all jobs for display
-$jobs = getAllJobs();
+// Fetch all jobs for display for this employer
+$jobs = getAllJobsForEmployer($employerId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
