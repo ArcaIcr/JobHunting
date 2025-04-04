@@ -73,6 +73,12 @@ $role = $_SESSION['loggedInUser']['role'] ?? '';
             <span class="link-text">Company Profile</span>
           </a>
         </li>
+        <li>
+          <a href="/pages/dashboard/employer/user_settings.php">
+            <i class="fas fa-user-cog"></i>
+            <span class="link-text">User Settings</span>
+          </a>
+        </li>
         <!-- Logout Button -->
         <div class="logout-container">
          <a href="/components/logout.php">
