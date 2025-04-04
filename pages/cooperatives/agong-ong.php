@@ -7,78 +7,10 @@ session_start();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trabaho Nasipit - Agong-ong Watershed Multi-Purpose Cooperative</title>
-  <style>
-    /* Basic Reset and Variables */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    :root {
-      --red: #FF0000;
-    }
-    /* Background and Layout */
-    body {
-      background: url('/assets/images/backg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Main Content */
-    .main-content {
-      margin-top: 100px; /* Space for fixed header */
-      width: 100%;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-    }
-    .content-container {
-      background: rgba(255, 255, 255, 0.98);
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-    .content-container h2 {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 1rem;
-    }
-    .content-container span {
-      font-size: 1.1rem;
-      color: #333;
-      display: block;
-      margin-bottom: 1rem;
-    }
-    .content-container p {
-      font-size: 1.1rem;
-      color: #555;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-    /* Responsive */
-    @media (max-width: 768px) {
-      .content-container {
-        padding: 1.5rem;
-      }
-      .content-container h2 {
-        font-size: 1.8rem;
-      }
-      .content-container span,
-      .content-container p {
-        font-size: 1rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
- <?php include '../../components/header.php'; ?>
+  <?php include '../../components/header.php'; ?>
   <main class="main-content">
     <div class="content-container">
       <h2>Agong-ong Watershed Multi-Purpose Cooperative</h2>
