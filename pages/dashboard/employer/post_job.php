@@ -4,11 +4,21 @@ session_start();
 require_once '../../../lib/auth.php';
 requireRole('employer');
 
+// Include the jobs model file that contains addJob()
+require_once '../../../lib/models/jobs_model.php';
+
 // If form is submitted, handle logic here...
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // e.g., insert job into database
-  // ...
-  $successMessage = "Job posted successfully!";
+  $jobTitle = $_POST['jobTitle'] ?? '';
+  $jobDescription = $_POST['jobDescription'] ?? '';
+  $location = $_POST['location'] ?? '';
+
+  // Attempt to add the job to the database
+  if (addJob($jobTitle, $jobDescription, $location)) {
+    $successMessage = "Job posted successfully!";
+  } else {
+    $errorMessage = "Failed to post job. Please try again.";
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -43,6 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php if (isset($successMessage)) : ?>
         <div class="card" style="margin-bottom: 1rem;">
           <p><?php echo htmlspecialchars($successMessage); ?></p>
+        </div>
+      <?php endif; ?>
+      <?php if (isset($errorMessage)) : ?>
+        <div class="card" style="margin-bottom: 1rem; color: red;">
+          <p><?php echo htmlspecialchars($errorMessage); ?></p>
         </div>
       <?php endif; ?>
 

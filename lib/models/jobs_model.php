@@ -22,6 +22,18 @@ function getPDO() {
 // getAllJobs()
 
 /**
+ * Add a new job.
+ */
+function addJob($jobTitle, $jobDescription, $jobLocation) {
+    $pdo = getPDO();
+    $sql = "INSERT INTO jobs (name, description, location, posted_at) VALUES (?, ?, ?, NOW())";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$jobTitle, $jobDescription, $jobLocation]);
+}
+
+
+
+/**
  * Fetch all jobs.
  */
 function getAllJobs() {
