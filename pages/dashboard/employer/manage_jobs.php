@@ -82,7 +82,7 @@ $jobs = getAllJobs();
               <td><?php echo htmlspecialchars($job['location']); ?></td>
               <td><?php echo htmlspecialchars($job['posted_at']); ?></td>
               <td>
-                <a href="edit_job.php?id=<?php echo $job['id']; ?>">Edit</a> | 
+                <a href="edit_job.php?id=<?php echo $job['id']; ?>">Edit</a> |
                 <a href="delete_job.php?id=<?php echo $job['id']; ?>">Delete</a>
               </td>
             </tr>

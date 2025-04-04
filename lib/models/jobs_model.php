@@ -1,7 +1,6 @@
 <?php
-// models/jobs_model.php
+// lib/models/jobs_model.php
 
-// Function to get a PDO connection (singleton pattern)
 function getPDO() {
     static $pdo = null;
     if ($pdo === null) {
@@ -18,20 +17,51 @@ function getPDO() {
     return $pdo;
 }
 
-// Function to add a new job
-function addJob($jobTitle, $jobDescription, $jobLocation) {
-    $pdo = getPDO();
-    $sql = "INSERT INTO jobs (name, description, location, posted_at) 
-            VALUES (?, ?, ?, NOW())";
-    $stmt = $pdo->prepare($sql);
-    return $stmt->execute([$jobTitle, $jobDescription, $jobLocation]);
-}
+// Already existing functions:
+// addJob($jobTitle, $jobDescription, $jobLocation)
+// getAllJobs()
 
-// Function to get all jobs
+/**
+ * Fetch all jobs.
+ */
 function getAllJobs() {
     $pdo = getPDO();
     $sql = "SELECT * FROM jobs ORDER BY posted_at DESC";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-?>
+
+
+
+/**
+ * Fetch a single job by ID.
+ */
+function getJobById($id) {
+    $pdo = getPDO();
+    $sql = "SELECT * FROM jobs WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Update a job.
+ */
+function updateJob($id, $jobTitle, $jobDescription, $jobLocation) {
+    $pdo = getPDO();
+    $sql = "UPDATE jobs
+            SET name = ?, description = ?, location = ?
+            WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$jobTitle, $jobDescription, $jobLocation, $id]);
+}
+
+/**
+ * Delete a job by ID.
+ */
+function deleteJob($id) {
+    $pdo = getPDO();
+    $sql = "DELETE FROM jobs WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$id]);
+}
