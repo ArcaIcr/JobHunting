@@ -1,33 +1,69 @@
 <?php
-// pages/dashboard/employer/company_profile.php
 session_start();
 require_once '../../../lib/auth.php';
 requireRole('employer');
 
+// Include the company model file
 require_once '../../../lib/models/company_model.php';
 
 $userId = $_SESSION['loggedInUser']['id'];
-
-// Fetch existing profile
 $profile = getCompanyProfile($userId);
 
-// Handle form submission for updating the profile
+$successMessage = '';
+$errorMessage   = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $companyName      = $_POST['company_name'] ?? '';
-    $companyWebsite   = $_POST['company_website'] ?? '';
+    // Retrieve form data, using null coalescing for safety
+    $companyName        = $_POST['company_name'] ?? '';
+    $companyWebsite     = $_POST['company_website'] ?? '';
     $companyDescription = $_POST['company_description'] ?? '';
-    // You can add more fields if needed
+    $location           = $_POST['location'] ?? '';
+    $contactEmail       = $_POST['contact_email'] ?? '';
+    $contactPhone       = $_POST['contact_phone'] ?? '';
     
-    // Check if a profile exists
-    if ($profile) {
-        updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription);
-    } else {
-        createCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription);
+    // Process file upload for logo, if provided
+    $logoFilename = $profile['logo'] ?? '';  // Keep existing logo by default
+    if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($fileInfo, $_FILES['logo']['tmp_name']);
+        finfo_close($fileInfo);
+
+        if (in_array($mimeType, $allowedMimeTypes)) {
+            // Create a unique filename with original extension
+            $extension = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
+            $logoFilename = uniqid('logo_', true) . '.' . $extension;
+            // Define the destination path
+            $destination = __DIR__ . '/../../../assets/images/logos/' . $logoFilename;
+
+            if (!move_uploaded_file($_FILES['logo']['tmp_name'], $destination)) {
+                $errorMessage = "Failed to upload logo.";
+            }
+        } else {
+            $errorMessage = "Invalid file type. Please upload a JPEG, PNG, or GIF image.";
+        }
     }
     
-    // Refresh the profile data
-    $profile = getCompanyProfile($userId);
-    $successMessage = "Profile updated successfully!";
+    // Only proceed if there is no error from file upload
+    if (!$errorMessage) {
+        if ($profile) {
+            // Update existing profile (including logo and additional fields)
+            if (updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename)) {
+                $successMessage = "Profile updated successfully!";
+            } else {
+                $errorMessage = "Failed to update profile.";
+            }
+        } else {
+            // Create a new profile row
+            if (createCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename)) {
+                $successMessage = "Profile created successfully!";
+            } else {
+                $errorMessage = "Failed to create profile.";
+            }
+        }
+        // Refresh the profile data
+        $profile = getCompanyProfile($userId);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -36,13 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Company Profile</title>
   <link rel="stylesheet" href="/assets/css/employer.css">
-  <style>
-    /* Add any additional styling you require */
-    .profile-card { padding: 1rem; background: #fff; margin-bottom: 1rem; border-radius: 4px; }
-    .profile-card img { max-width: 150px; }
-    .feedback { padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem; }
-    .feedback.success { background-color: #d4edda; color: #155724; }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <header class="dashboard-top-bar">
@@ -65,16 +95,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include '../../../components/sidebar.php'; ?>
     <main class="dashboard-content">
       <h1>Company Profile</h1>
-      <?php if (isset($successMessage)) : ?>
+      <?php if ($successMessage): ?>
         <div class="feedback success">
           <p><?php echo htmlspecialchars($successMessage); ?></p>
+        </div>
+      <?php endif; ?>
+      <?php if ($errorMessage): ?>
+        <div class="feedback error">
+          <p><?php echo htmlspecialchars($errorMessage); ?></p>
         </div>
       <?php endif; ?>
 
       <!-- Display company profile -->
       <?php if ($profile): ?>
         <div class="profile-card">
-          <!-- If you have a logo, adjust the path accordingly. -->
           <img src="/assets/images/logos/<?php echo htmlspecialchars($profile['logo'] ?? 'default.png'); ?>" alt="Company Logo">
           <h2><?php echo htmlspecialchars($profile['company_name'] ?? ''); ?></h2>
           <p><strong>Description:</strong> <?php echo htmlspecialchars($profile['company_description'] ?? ''); ?></p>
@@ -92,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php endif; ?>
 
       <!-- Edit form -->
-      <form method="post" action="company_profile.php" class="card" style="margin-top: 2rem;">
+      <form method="post" action="company_profile.php" enctype="multipart/form-data" class="card">
         <h2>Edit Company Profile</h2>
         <div>
           <label for="company_name">Company Name:</label>
@@ -118,7 +152,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label for="company_website">Website:</label>
           <input type="url" id="company_website" name="company_website" value="<?php echo htmlspecialchars($profile['company_website'] ?? ''); ?>">
         </div>
-        <!-- Optionally, add file input for logo upload -->
+        <div>
+          <label for="logo">Company Logo:</label>
+          <input type="file" id="logo" name="logo" accept="image/*">
+        </div>
         <button type="submit">Update Profile</button>
       </form>
     </main>

@@ -22,8 +22,6 @@ function getPDO() {
 
 /**
  * Fetch the company profile for a given employer.
- * Assumes the table "employer_profiles" with columns:
- * - id, user_id, company_name, company_website, company_description, etc.
  */
 function getCompanyProfile($userId) {
     $pdo = getPDO();
@@ -36,22 +34,22 @@ function getCompanyProfile($userId) {
 /**
  * Update the company profile for a given employer.
  */
-function updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription) {
+function updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename) {
     $pdo = getPDO();
     $sql = "UPDATE employer_profiles
-            SET company_name = ?, company_website = ?, company_description = ?
+            SET company_name = ?, company_website = ?, company_description = ?, location = ?, contact_email = ?, contact_phone = ?, logo = ?
             WHERE user_id = ?";
     $stmt = $pdo->prepare($sql);
-    return $stmt->execute([$companyName, $companyWebsite, $companyDescription, $userId]);
+    return $stmt->execute([$companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename, $userId]);
 }
 
 /**
  * Create a new company profile for a given employer.
  */
-function createCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription) {
+function createCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename) {
     $pdo = getPDO();
-    $sql = "INSERT INTO employer_profiles (user_id, company_name, company_website, company_description)
-            VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO employer_profiles (user_id, company_name, company_website, company_description, location, contact_email, contact_phone, logo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    return $stmt->execute([$userId, $companyName, $companyWebsite, $companyDescription]);
+    return $stmt->execute([$userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename]);
 }
