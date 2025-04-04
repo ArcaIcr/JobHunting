@@ -38,3 +38,11 @@ function updateUserPassword($userId, $hashedPassword) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$hashedPassword, $userId]);
 }
+
+
+function updateUserAvatar($userId, $avatarFilename) {
+    $pdo = getPDO();
+    $sql = "UPDATE users SET avatar = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$avatarFilename, $userId]);
+}
