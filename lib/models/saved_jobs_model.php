@@ -14,6 +14,7 @@ function getJobsSavedCountForJobseeker($jobseekerId) {
     return $stmt->fetchColumn();
 }
 
+
 /**
  * Retrieves the saved jobs for a given jobseeker.
  * Joins saved_jobs with jobs and employer_profiles to get job details.
@@ -33,4 +34,35 @@ function getSavedJobsForJobseeker($jobseekerId) {
     $stmt->execute([$jobseekerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Checks if the jobseeker has already saved a given job.
+ *
+ * @param int $jobseekerId
+ * @param int $jobId
+ * @return bool
+ */
+function hasJobBeenSaved($jobseekerId, $jobId) {
+    $pdo = getPDO();
+    $sql = "SELECT COUNT(*) FROM saved_jobs WHERE user_id = ? AND job_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$jobseekerId, $jobId]);
+    return $stmt->fetchColumn() > 0;
+}
+
+
+/**
+ * Saves a job for the jobseeker.
+ *
+ * @param int $jobseekerId
+ * @param int $jobId
+ * @return bool
+ */
+function saveJobForJobseeker($jobseekerId, $jobId) {
+    $pdo = getPDO();
+    $sql = "INSERT INTO saved_jobs (user_id, job_id, saved_at) VALUES (?, ?, NOW())";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$jobseekerId, $jobId]);
+}
+
 ?>
