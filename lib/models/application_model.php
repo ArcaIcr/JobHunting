@@ -38,4 +38,38 @@ function applyForJob($job_id, $jobseekerId, $applicantName) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$job_id, $jobseekerId, $applicantName]);
 }
+
+
+/**
+ * Returns the total number of applications sent by the jobseeker.
+ */
+function getApplicationCountForJobseeker($jobseekerId) {
+    $pdo = getPDO();
+    $sql = "SELECT COUNT(*) FROM applications WHERE user_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$jobseekerId]);
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Returns the number of applications with status 'Interview Scheduled'.
+ */
+function getInterviewScheduledCountForJobseeker($jobseekerId) {
+    $pdo = getPDO();
+    $sql = "SELECT COUNT(*) FROM applications WHERE user_id = ? AND status = 'Interview Scheduled'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$jobseekerId]);
+    return $stmt->fetchColumn();
+}
+
+
+function hasUserApplied($userId, $jobId) {
+    $pdo = getPDO();
+    $sql = "SELECT COUNT(*) FROM applications WHERE user_id = ? AND job_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userId, $jobId]);
+    $count = $stmt->fetchColumn();
+    return $count > 0; // returns true if at least one record exists
+}
+
 ?>
