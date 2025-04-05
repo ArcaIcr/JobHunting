@@ -91,4 +91,14 @@ function updateApplicationStatus($app_id, $status) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$status, $app_id]);
 }
+
+
+function getApplicationForJob($userId, $jobId) {
+    $pdo = getPDO();
+    $sql = "SELECT * FROM applications WHERE user_id = ? AND job_id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userId, $jobId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
