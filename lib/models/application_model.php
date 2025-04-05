@@ -6,9 +6,9 @@ require_once __DIR__ . '/../db.php';  // Ensure getPDO() is available
 /**
  * Fetch all job applications for the given jobseeker.
  * Assumes:
- *   - The applications table has a 'job_id', 'user_id', 'date_applied', and 'status' column.
- *   - The jobs table contains a 'name' column for the job title and an 'employer_id' column.
- *   - The employer_profiles table contains a 'company_name' column and links to jobs via 'user_id' in employer_profiles.
+ *   - The applications table has columns: id, job_id, user_id, applicant_name, resume, date_applied, status.
+ *   - The jobs table contains the job details (like name).
+ *   - The employer_profiles table contains the company_name.
  */
 function getApplicationsForJobseeker($jobseekerId) {
     $pdo = getPDO();
@@ -22,7 +22,6 @@ function getApplicationsForJobseeker($jobseekerId) {
     $stmt->execute([$jobseekerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 /**
  * Insert a new application for a given job, including a resume file.
@@ -40,7 +39,6 @@ function applyForJob($job_id, $jobseekerId, $applicantName, $resumeFilename) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$job_id, $jobseekerId, $applicantName, $resumeFilename]);
 }
-
 
 /**
  * Returns the total number of applications sent by the jobseeker.
@@ -64,14 +62,33 @@ function getInterviewScheduledCountForJobseeker($jobseekerId) {
     return $stmt->fetchColumn();
 }
 
-
+/**
+ * Check if the jobseeker has already applied for a specific job.
+ *
+ * @param int $userId
+ * @param int $jobId
+ * @return bool
+ */
 function hasUserApplied($userId, $jobId) {
     $pdo = getPDO();
     $sql = "SELECT COUNT(*) FROM applications WHERE user_id = ? AND job_id = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$userId, $jobId]);
     $count = $stmt->fetchColumn();
-    return $count > 0; // returns true if at least one record exists
+    return $count > 0;
 }
 
+/**
+ * Updates the status of an application.
+ *
+ * @param int $app_id
+ * @param string $status
+ * @return bool
+ */
+function updateApplicationStatus($app_id, $status) {
+    $pdo = getPDO();
+    $sql = "UPDATE applications SET status = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$status, $app_id]);
+}
 ?>

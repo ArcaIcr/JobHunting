@@ -5,6 +5,7 @@ session_start();
 require_once '../../../lib/auth.php';
 requireRole('jobseeker');
 
+
 // Include models
 require_once '../../../lib/models/jobs_model.php';
 require_once '../../../lib/models/application_model.php';

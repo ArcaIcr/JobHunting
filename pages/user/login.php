@@ -1,5 +1,6 @@
 <?php
-// login.php
+// pages/user/login.php
+
 session_start();
 include '../../config/config.php';
 
@@ -19,12 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if the user exists
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            // Verify the password (assumes password stored is hashed)
+            // Verify the password (assuming password is hashed)
             if (password_verify($password, $user['password'])) {
-                // Set session variables (or any other login logic)
+                // Normalize the role before storing in session
+                $user['role'] = strtolower(trim($user['role']));
                 $_SESSION['loggedInUser'] = $user;
                 
-                // Role-based redirection to the respective dashboard
+                // Role-based redirection
                 if ($user['role'] === 'employer') {
                     header("Location: /pages/dashboard/employer/index.php");
                 } else {
@@ -49,13 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Trabaho Nasipit</title>
-  <!-- Link to external CSS -->
   <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 <body>
-  <!-- Include header component -->
   <?php include '../../components/header.php'; ?>
-
   <div class="login-container">
     <h1>Log in</h1>
     <?php if (!empty($error)): ?>
@@ -75,11 +74,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
       <button type="submit">Log in</button>
     </form>
-    <p><a href="home.php">Return to Home</a></p>
+    <p><a href="/pages/home/home.php">Return to Home</a></p>
   </div>
-
   <script>
-    // Function to toggle password visibility
     function togglePassword(fieldId) {
       var field = document.getElementById(fieldId);
       field.type = (field.type === "password") ? "text" : "password";

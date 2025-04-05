@@ -2,7 +2,7 @@
 // lib/auth.php
 
 // Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -19,16 +19,26 @@ function requireLogin() {
 
 function getUserRole() {
     if (isLoggedIn()) {
-        // Assuming the session stores a 'role' (e.g., 'jobseeker' or 'employer')
-        return $_SESSION['loggedInUser']['role'] ?? null;
+        // Normalize the role: trim and convert to lowercase.
+        return strtolower(trim($_SESSION['loggedInUser']['role'] ?? ''));
     }
     return null;
 }
 
 function requireRole($role) {
     requireLogin();
-    if (getUserRole() !== $role) {
-        header("Location: /pages/home.php");
+    $currentRole = getUserRole();
+    $requiredRole = strtolower(trim($role));
+    
+    if ($currentRole !== $requiredRole) {
+        // If role mismatch, redirect based on the current role.
+        if ($currentRole === 'employer') {
+            header("Location: /pages/dashboard/employer/index.php");
+        } elseif ($currentRole === 'jobseeker') {
+            header("Location: /pages/dashboard/jobseeker/index.php");
+        } else {
+            header("Location: /pages/user/login.php");
+        }
         exit;
     }
 }
