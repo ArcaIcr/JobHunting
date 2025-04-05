@@ -1,4 +1,5 @@
 <?php
+// pages/dashboard/jobseeker/applications.php
 session_start();
 require_once '../../../lib/auth.php';
 requireRole('jobseeker');
@@ -20,7 +21,51 @@ $applications = getApplicationsForJobseeker($jobseekerId);
   <link rel="stylesheet" href="/assets/css/jobseeker.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- (Optional) You can add additional styling here or in your centralized CSS -->
+  <style>
+    /* Modernized styling for the Applications page */
+    .applications-header {
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      padding: 2rem;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    .applications-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .applications-header p {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    .applications-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .applications-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .applications-table th,
+    .applications-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    .applications-table th {
+      background-color: #f4f4f4;
+    }
+    @media (max-width: 768px) {
+      .applications-table th,
+      .applications-table td {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Shared Top Bar/Header -->
@@ -30,31 +75,36 @@ $applications = getApplicationsForJobseeker($jobseekerId);
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>
     <main class="dashboard-content">
-      <h1>Job Applications</h1>
-      <?php if (!empty($applications)): ?>
-        <table>
-          <thead>
-            <tr>
-              <th>Job Title</th>
-              <th>Company</th>
-              <th>Date Applied</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($applications as $app): ?>
+      <div class="applications-header">
+        <h1>My Job Applications</h1>
+        <p>Track the status of the jobs you applied for</p>
+      </div>
+      <div class="applications-container">
+        <?php if (!empty($applications)): ?>
+          <table class="applications-table">
+            <thead>
               <tr>
-                <td><?php echo htmlspecialchars($app['job_title']); ?></td>
-                <td><?php echo htmlspecialchars($app['company_name']); ?></td>
-                <td><?php echo htmlspecialchars($app['date_applied']); ?></td>
-                <td><?php echo htmlspecialchars($app['status']); ?></td>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Date Applied</th>
+                <th>Status</th>
               </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      <?php else: ?>
-        <p>No applications found.</p>
-      <?php endif; ?>
+            </thead>
+            <tbody>
+              <?php foreach ($applications as $app): ?>
+                <tr>
+                  <td><?php echo htmlspecialchars($app['job_title']); ?></td>
+                  <td><?php echo htmlspecialchars($app['company_name']); ?></td>
+                  <td><?php echo htmlspecialchars($app['date_applied']); ?></td>
+                  <td><?php echo htmlspecialchars($app['status']); ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        <?php else: ?>
+          <p>No applications found. Start applying for jobs now!</p>
+        <?php endif; ?>
+      </div>
     </main>
   </div>
 

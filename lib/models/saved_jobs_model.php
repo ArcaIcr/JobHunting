@@ -13,4 +13,24 @@ function getJobsSavedCountForJobseeker($jobseekerId) {
     $stmt->execute([$jobseekerId]);
     return $stmt->fetchColumn();
 }
+
+/**
+ * Retrieves the saved jobs for a given jobseeker.
+ * Joins saved_jobs with jobs and employer_profiles to get job details.
+ *
+ * @param int $jobseekerId The ID of the jobseeker.
+ * @return array An array of saved jobs.
+ */
+function getSavedJobsForJobseeker($jobseekerId) {
+    $pdo = getPDO();
+    $sql = "SELECT sj.*, j.name AS job_title, j.location, j.posted_at, ep.company_name
+            FROM saved_jobs sj
+            JOIN jobs j ON sj.job_id = j.id
+            JOIN employer_profiles ep ON j.employer_id = ep.user_id
+            WHERE sj.user_id = ?
+            ORDER BY sj.saved_at DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$jobseekerId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
