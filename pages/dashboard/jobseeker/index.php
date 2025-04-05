@@ -1,15 +1,20 @@
 <?php
 // pages/dashboard/jobseeker/index.php
 session_start();
-require_once '../../../lib/auth.php';
-requireRole('jobseeker');
+require_once '../../../lib/models/jobs_model.php';
+
+
+// Include the jobs model to retrieve job postings
+require_once '../../../lib/models/jobs_model.php';
+
+// Retrieve all job postings
+$jobs = getAllJobs();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Jobseeker Dashboard Home</title>
-  <!-- Dashboard-specific CSS -->
   <link rel="stylesheet" href="/assets/css/jobseeker.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -33,7 +38,7 @@ requireRole('jobseeker');
     </div>
   </header>
 
-  <!-- Main Wrapper for Sidebar + Content -->
+  <!-- Main Wrapper for Sidebar and Content -->
   <div class="dashboard-wrapper">
     <!-- Sidebar -->
     <?php include '../../../components/sidebar.php'; ?>
@@ -41,6 +46,8 @@ requireRole('jobseeker');
     <!-- Main Content -->
     <main class="dashboard-content">
       <h1>Welcome, <?php echo htmlspecialchars($_SESSION['loggedInUser']['username']); ?></h1>
+      
+      <!-- Existing Stats Section -->
       <section class="stats">
         <div class="card">
           <h3>Applications Sent</h3>
@@ -54,6 +61,38 @@ requireRole('jobseeker');
           <h3>Jobs Saved</h3>
           <p>8</p>
         </div>
+      </section>
+      
+      <!-- New Job Listings Section -->
+      <section class="job-listings">
+        <h2>Available Job Postings</h2>
+        <?php if (!empty($jobs)): ?>
+          <table>
+            <thead>
+              <tr>
+                <th>Job Title</th>
+                <th>Location</th>
+                <th>Date Posted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($jobs as $job): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($job['name']); ?></td>
+                <td><?php echo htmlspecialchars($job['location']); ?></td>
+                <td><?php echo htmlspecialchars($job['posted_at']); ?></td>
+                <td>
+                  <!-- Link to the application page or process (adjust URL as needed) -->
+                  <a href="apply.php?job_id=<?php echo $job['id']; ?>" class="btn">Apply</a>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        <?php else: ?>
+          <p>No job postings available at the moment.</p>
+        <?php endif; ?>
       </section>
     </main>
   </div>

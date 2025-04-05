@@ -24,24 +24,31 @@ function addJob($jobTitle, $jobDescription, $jobLocation, $employerId) {
 /**
  * Fetch all jobs.
  */
-function getAllJobsForEmployer($employerId) {
+function getAllJobs($employerId = null) {
     $pdo = getPDO();
-    $sql = "SELECT * FROM jobs WHERE employer_id = ? ORDER BY posted_at DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$employerId]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($employerId === null) {
+         $sql = "SELECT * FROM jobs ORDER BY posted_at DESC";
+         $stmt = $pdo->query($sql);
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+         $sql = "SELECT * FROM jobs WHERE employer_id = ? ORDER BY posted_at DESC";
+         $stmt = $pdo->prepare($sql);
+         $stmt->execute([$employerId]);
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+
 
 
 
 /**
  * Fetch a single job by ID.
  */
-function getJobById($id) {
+function getJobById($job_id) {
     $pdo = getPDO();
     $sql = "SELECT * FROM jobs WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id]);
+    $stmt->execute([$job_id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 

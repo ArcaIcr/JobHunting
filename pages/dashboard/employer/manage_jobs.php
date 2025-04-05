@@ -9,6 +9,8 @@ require_once '../../../lib/models/jobs_model.php';
 
 // Get employer ID from session
 $employerId = $_SESSION['loggedInUser']['id'];
+$jobs = getAllJobs($employerId);
+
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Fetch all jobs for display for this employer
-$jobs = getAllJobsForEmployer($employerId);
+$jobs = getAllJobs($employerId);
 ?>
 <!DOCTYPE html>
 <html lang="en">

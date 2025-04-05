@@ -1,8 +1,16 @@
 <?php
-// pages/dashboard/jobseeker/applications.php
 session_start();
 require_once '../../../lib/auth.php';
 requireRole('jobseeker');
+
+// Include the application model to fetch applications
+require_once '../../../lib/models/application_model.php';
+
+// Get the current jobseeker's ID from the session
+$jobseekerId = $_SESSION['loggedInUser']['id'];
+
+// Fetch applications dynamically
+$applications = getApplicationsForJobseeker($jobseekerId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,58 +20,44 @@ requireRole('jobseeker');
   <link rel="stylesheet" href="/assets/css/jobseeker.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- (Optional) You can add additional styling here or in your centralized CSS -->
 </head>
 <body>
-  <!-- Top Bar -->
-  <header class="dashboard-top-bar">
-    <div class="left-group">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2>TrabahoNasipit</h2>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search...">
-    </div>
-    <div class="user-profile">
-      <img src="/assets/images/profile.png" alt="User">
-      <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['username']); ?></span>
-    </div>
-  </header>
+  <!-- Shared Top Bar/Header -->
+  <?php include '../../../components/d-header.php'; ?>
 
   <!-- Main Wrapper for Sidebar and Content -->
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>
     <main class="dashboard-content">
       <h1>Job Applications</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Job Title</th>
-            <th>Company</th>
-            <th>Date Applied</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Software Engineer</td>
-            <td>ABC Corp</td>
-            <td>2025-03-01</td>
-            <td>Under Review</td>
-          </tr>
-          <tr>
-            <td>Front-end Developer</td>
-            <td>XYZ Inc</td>
-            <td>2025-02-25</td>
-            <td>Interview Scheduled</td>
-          </tr>
-        </tbody>
-      </table>
+      <?php if (!empty($applications)): ?>
+        <table>
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Date Applied</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($applications as $app): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($app['job_title']); ?></td>
+                <td><?php echo htmlspecialchars($app['company_name']); ?></td>
+                <td><?php echo htmlspecialchars($app['date_applied']); ?></td>
+                <td><?php echo htmlspecialchars($app['status']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php else: ?>
+        <p>No applications found.</p>
+      <?php endif; ?>
     </main>
   </div>
 
-  <!-- Sidebar Toggle Script -->
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById('dashboardSidebar');

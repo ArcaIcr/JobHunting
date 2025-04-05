@@ -11,7 +11,7 @@ require_once '../../../lib/models/jobs_model.php';
 
 // Get employer ID and fetch jobs for stats and recent activity
 $employerId = $_SESSION['loggedInUser']['id'];
-$jobs = getAllJobsForEmployer($employerId);
+$jobs = getAllJobs($employerId);
 $totalJobs = count($jobs);
 
 // Function to get pending applications count for the employer's jobs
