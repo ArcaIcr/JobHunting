@@ -23,20 +23,22 @@ function getApplicationsForJobseeker($jobseekerId) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
 /**
- * Insert a new application for a given job.
+ * Insert a new application for a given job, including a resume file.
  *
- * @param int $job_id
- * @param int $jobseekerId
+ * @param int    $job_id
+ * @param int    $jobseekerId
  * @param string $applicantName
+ * @param string $resumeFilename (can be empty if no resume was attached)
  * @return bool
  */
-function applyForJob($job_id, $jobseekerId, $applicantName) {
+function applyForJob($job_id, $jobseekerId, $applicantName, $resumeFilename) {
     $pdo = getPDO();
-    $sql = "INSERT INTO applications (job_id, user_id, applicant_name, date_applied, status) 
-            VALUES (?, ?, ?, NOW(), 'Under Review')";
+    $sql = "INSERT INTO applications (job_id, user_id, applicant_name, resume, date_applied, status) 
+            VALUES (?, ?, ?, ?, NOW(), 'Under Review')";
     $stmt = $pdo->prepare($sql);
-    return $stmt->execute([$job_id, $jobseekerId, $applicantName]);
+    return $stmt->execute([$job_id, $jobseekerId, $applicantName, $resumeFilename]);
 }
 
 

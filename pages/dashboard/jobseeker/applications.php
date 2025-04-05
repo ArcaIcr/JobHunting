@@ -21,51 +21,7 @@ $applications = getApplicationsForJobseeker($jobseekerId);
   <link rel="stylesheet" href="/assets/css/jobseeker.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Modernized styling for the Applications page */
-    .applications-header {
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      padding: 2rem;
-      color: #fff;
-      text-align: center;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-    .applications-header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .applications-header p {
-      font-size: 1.2rem;
-      margin: 0;
-    }
-    .applications-container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .applications-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .applications-table th,
-    .applications-table td {
-      padding: 1rem;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-    .applications-table th {
-      background-color: #f4f4f4;
-    }
-    @media (max-width: 768px) {
-      .applications-table th,
-      .applications-table td {
-        font-size: 0.9rem;
-        padding: 0.75rem;
-      }
-    }
-  </style>
+  
 </head>
 <body>
   <!-- Shared Top Bar/Header -->

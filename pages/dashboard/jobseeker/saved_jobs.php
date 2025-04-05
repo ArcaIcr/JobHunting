@@ -18,32 +18,7 @@ $savedJobs = getSavedJobsForJobseeker($jobseekerId);
   <link rel="stylesheet" href="/assets/css/jobseeker.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Additional styling for the saved jobs list */
-    .saved-jobs-list {
-      list-style: none;
-      padding-left: 0;
-    }
-    .saved-jobs-list li {
-      background: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: var(--border-radius);
-      box-shadow: var(--card-shadow);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .saved-jobs-list li a {
-      text-decoration: none;
-      color: var(--text-dark);
-      font-weight: bold;
-    }
-    .saved-jobs-list li span {
-      font-size: 0.9rem;
-      color: #555;
-    }
-  </style>
+
 </head>
 <body>
   <!-- Top Bar -->
