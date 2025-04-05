@@ -24,7 +24,12 @@ function getJobsSavedCountForJobseeker($jobseekerId) {
  */
 function getSavedJobsForJobseeker($jobseekerId) {
     $pdo = getPDO();
-    $sql = "SELECT sj.*, j.name AS job_title, j.location, j.posted_at, ep.company_name
+    $sql = "SELECT sj.*, 
+                   j.name AS job_title,
+                   j.description,      -- Make sure to select the 'description' column
+                   j.location, 
+                   j.posted_at, 
+                   ep.company_name
             FROM saved_jobs sj
             JOIN jobs j ON sj.job_id = j.id
             JOIN employer_profiles ep ON j.employer_id = ep.user_id
@@ -34,6 +39,7 @@ function getSavedJobsForJobseeker($jobseekerId) {
     $stmt->execute([$jobseekerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 /**
  * Checks if the jobseeker has already saved a given job.
