@@ -314,3 +314,130 @@ html, body {
   font-size: 0.9rem;
   color: #555;
 }
+
+
+ /* Modernized styling for the Applications page */
+ .applications-header {
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  padding: 2rem;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.applications-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.applications-header p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+.applications-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.applications-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.applications-table th,
+.applications-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+.applications-table th {
+  background-color: #f4f4f4;
+}
+@media (max-width: 768px) {
+  .applications-table th,
+  .applications-table td {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}
+
+
+ /* Modernized styling for the jobseeker profile page */
+ .profile-hero {
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.profile-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.profile-hero p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+.profile-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.avatar-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.avatar-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.profile-card .input-group {
+  margin-bottom: 1rem;
+}
+.profile-card label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.profile-card input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.profile-card button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+.profile-card button:hover {
+  background: #d65a3f;
+}
+.feedback {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+.feedback.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.feedback.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
