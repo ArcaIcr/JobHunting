@@ -10,20 +10,6 @@ require_once '../../../lib/models/jobs_model.php';
 // Get employer ID from session
 $employerId = $_SESSION['loggedInUser']['id'];
 $jobs = getAllJobs($employerId);
-
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $jobTitle       = $_POST['job_title'] ?? '';
-    $jobLocation    = $_POST['location'] ?? '';
-    $jobDescription = $_POST['description'] ?? '';
-    
-    // Insert the job with the employer_id
-    addJob($jobTitle, $jobDescription, $jobLocation, $employerId);
-}
-
-// Fetch all jobs for display for this employer
-$jobs = getAllJobs($employerId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,60 +18,45 @@ $jobs = getAllJobs($employerId);
   <title>Manage Jobs</title>
   <link rel="stylesheet" href="/assets/css/employer.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
 </head>
 <body>
- <?php include '../../../components/d-header.php'; ?>
+  <?php include '../../../components/d-header.php'; ?>
 
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>
     <main class="dashboard-content">
       <h1>Manage Jobs</h1>
-      <!-- Add Job Form -->
-      <form action="" method="POST" style="margin-bottom: 2rem;">
-        <div>
-          <label for="job_title">Job Title:</label><br>
-          <input type="text" id="job_title" name="job_title" required>
-        </div>
-        <div>
-          <label for="location">Location:</label><br>
-          <input type="text" id="location" name="location" required>
-        </div>
-        <div>
-          <label for="description">Description:</label><br>
-          <textarea id="description" name="description" rows="4" required></textarea>
-        </div>
-        <button type="submit">Add Job</button>
-      </form>
-
-      <!-- Jobs Table -->
-      <table>
-        <thead>
-          <tr>
-            <th>Job Title</th>
-            <th>Location</th>
-            <th>Date Posted</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($jobs as $job) : ?>
+      <div class="jobs-table-container">
+        <table>
+          <thead>
             <tr>
-              <td><?php echo htmlspecialchars($job['name']); ?></td>
-              <td><?php echo htmlspecialchars($job['location']); ?></td>
-              <td><?php echo htmlspecialchars($job['posted_at']); ?></td>
-              <td>
-                <a href="edit_job.php?id=<?php echo $job['id']; ?>">Edit</a> |
-                <a href="delete_job.php?id=<?php echo $job['id']; ?>">Delete</a>
-              </td>
+              <th>Job Title</th>
+              <th>Location</th>
+              <th>Date Posted</th>
+              <th>Actions</th>
             </tr>
-          <?php endforeach; ?>
-          <?php if (count($jobs) === 0): ?>
-            <tr>
-              <td colspan="4">No jobs posted yet.</td>
-            </tr>
-          <?php endif; ?>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <?php foreach ($jobs as $job) : ?>
+              <tr>
+                <td><?php echo htmlspecialchars($job['name']); ?></td>
+                <td><?php echo htmlspecialchars($job['location']); ?></td>
+                <td><?php echo htmlspecialchars($job['posted_at']); ?></td>
+                <td>
+                  <a href="edit_job.php?id=<?php echo $job['id']; ?>">Edit</a> |
+                  <a href="delete_job.php?id=<?php echo $job['id']; ?>">Delete</a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+            <?php if (count($jobs) === 0): ?>
+              <tr>
+                <td colspan="4">No jobs posted yet.</td>
+              </tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
     </main>
   </div>
 

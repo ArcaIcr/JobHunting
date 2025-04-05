@@ -10,7 +10,6 @@ require_once '../../../lib/models/jobs_model.php';
 if (!isset($_GET['id'])) {
     die("No job ID provided.");
 }
-
 $jobId = $_GET['id'];
 
 // 2. If the form is submitted, update the job
@@ -28,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // 3. Fetch the existing job data
 $job = getJobById($jobId);
-
 if (!$job) {
     die("Job not found.");
 }
@@ -38,47 +36,100 @@ if (!$job) {
 <head>
   <meta charset="UTF-8">
   <title>Edit Job</title>
-  <!-- Make sure this path matches your folder structure -->
   <link rel="stylesheet" href="/assets/css/employer.css">
-  <!-- Optional FontAwesome icons -->
-  <link rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Modern styling for Edit Job page */
+    .hero {
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    .edit-job-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .edit-job-card form > div {
+      margin-bottom: 1rem;
+    }
+    .edit-job-card label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .edit-job-card input[type="text"],
+    .edit-job-card textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+    .edit-job-card button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .edit-job-card button:hover {
+      background: #d65a3f;
+    }
+  </style>
 </head>
 <body>
-  <!-- HEADER (copy the same structure as manage_jobs.php) -->
   <?php include '../../../components/d-header.php'; ?>
 
-  <!-- WRAPPER -->
   <div class="dashboard-wrapper">
-    <!-- SIDEBAR -->
     <?php include '../../../components/sidebar.php'; ?>
-
-    <!-- MAIN CONTENT -->
     <main class="dashboard-content">
-      <h1>Edit Job</h1>
-      <form action="" method="POST">
-        <div>
-          <label for="job_title">Job Title:</label><br>
-          <input type="text" id="job_title" name="job_title"
-                 value="<?php echo htmlspecialchars($job['name']); ?>" required>
-        </div>
-        <div>
-          <label for="location">Location:</label><br>
-          <input type="text" id="location" name="location"
-                 value="<?php echo htmlspecialchars($job['location']); ?>" required>
-        </div>
-        <div>
-          <label for="description">Description:</label><br>
-          <textarea id="description" name="description" rows="4" required><?php
-            echo htmlspecialchars($job['description']);
-          ?></textarea>
-        </div>
-        <button type="submit">Update Job</button>
-      </form>
+      <div class="hero">
+        <h1>Edit Job</h1>
+        <p>Update the job details below</p>
+      </div>
+      <div class="edit-job-card">
+        <form action="" method="POST">
+          <div>
+            <label for="job_title">Job Title:</label>
+            <input type="text" id="job_title" name="job_title" value="<?php echo htmlspecialchars($job['name']); ?>" required>
+          </div>
+          <div>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($job['location']); ?>" required>
+          </div>
+          <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required><?php echo htmlspecialchars($job['description']); ?></textarea>
+          </div>
+          <button type="submit">Update Job</button>
+        </form>
+      </div>
     </main>
   </div>
 
-  <!-- SIDEBAR TOGGLE SCRIPT (same as manage_jobs.php) -->
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById('dashboardSidebar');

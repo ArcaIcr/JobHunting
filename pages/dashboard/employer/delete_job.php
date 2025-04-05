@@ -35,28 +35,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Delete Job</title>
   <link rel="stylesheet" href="/assets/css/employer.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
 </head>
 <body>
-  <!-- HEADER -->
   <?php include '../../../components/d-header.php'; ?>
 
-  <!-- DASHBOARD WRAPPER -->
   <div class="dashboard-wrapper">
     <?php include '../../../components/sidebar.php'; ?>
     <main class="dashboard-content">
-      <h1>Delete Job</h1>
-      <p>
-        Are you sure you want to delete the job: 
-        <strong><?php echo htmlspecialchars($job['name']); ?></strong>?
-      </p>
-      <form action="" method="POST">
-        <button type="submit" name="confirm" value="Yes">Yes, delete</button>
-        <button type="submit" name="confirm" value="No">No, cancel</button>
-      </form>
+      <div class="hero">
+        <h1>Delete Job</h1>
+        <p>Confirm deletion of job posting</p>
+      </div>
+      <div class="delete-job-card">
+        <p>
+          Are you sure you want to delete the job: 
+          <strong><?php echo htmlspecialchars($job['name']); ?></strong>?
+        </p>
+        <form action="" method="POST">
+          <button type="submit" name="confirm" value="Yes">Yes, delete</button>
+          <button type="submit" name="confirm" value="No" class="cancel-btn">No, cancel</button>
+        </form>
+      </div>
     </main>
   </div>
 
-  <!-- SIDEBAR TOGGLE SCRIPT -->
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById('dashboardSidebar');
