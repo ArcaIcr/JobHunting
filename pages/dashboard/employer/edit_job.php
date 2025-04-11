@@ -39,66 +39,7 @@ if (!$job) {
   <link rel="stylesheet" href="/assets/css/employer.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Modern styling for Edit Job page */
-    .hero {
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      color: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin: 0;
-    }
-    .edit-job-card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .edit-job-card form > div {
-      margin-bottom: 1rem;
-    }
-    .edit-job-card label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-      color: #333;
-    }
-    .edit-job-card input[type="text"],
-    .edit-job-card textarea {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-size: 1rem;
-    }
-    .edit-job-card button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-      width: 100%;
-      margin-top: 1rem;
-    }
-    .edit-job-card button:hover {
-      background: #d65a3f;
-    }
-  </style>
+  
 </head>
 <body>
   <?php include '../../../components/d-header.php'; ?>
