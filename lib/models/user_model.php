@@ -3,6 +3,15 @@
 
 require_once __DIR__ . '/../db.php';
 
+
+function getAllUsers() {
+    $pdo = getPDO();
+    $sql = "SELECT id, username, email, role, created_at FROM users";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 function getUserById($userId) {
     $pdo = getPDO();
     $sql = "SELECT * FROM users WHERE id = ?";
