@@ -644,3 +644,132 @@ th {
 }
 .view-btn { background: #17a2b8; }
 .remove-btn { background: #dc3545; }
+
+
+
+
+
+/* Main content offset by the fixed sidebar (250px) */
+.container.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  max-width: 1200px;
+  margin-top: 20px;
+  background: #f8f9fa;
+}
+/* Content Wrapper styles */
+.content-wrapper {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+table, th, td {
+  border: 1px solid #ddd;
+}
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+th {
+  background: #007bff;
+  color: #fff;
+}
+/* Button styles */
+.add-btn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+.add-btn:hover {
+  background-color: #2980b9;
+}
+.btn-warning, .btn-danger {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-right: 5px;
+}
+.btn-warning { background-color: #f1c40f; }
+.btn-warning:hover { background-color: #d4ac0d; }
+.btn-danger { background-color: #e74c3c; }
+.btn-danger:hover { background-color: #c0392b; }
+/* Modal styling for Add/Edit and Delete confirmation */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+.modal-dialog {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.modal-title {
+  font-size: 1.3rem;
+  margin: 0;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+.close-btn:hover {
+  color: #000;
+}
+.modal-body {
+  margin-top: 10px;
+}
+.modal-footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+/* Form control styling */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+}
