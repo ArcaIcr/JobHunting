@@ -10,30 +10,30 @@ require_once '../../../lib/models/Vacancy.php';
 $error = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve and sanitize form data.
-    $company_name    = trim($_POST['company_name'] ?? '');
-    $title           = trim($_POST['title'] ?? '');
-    $employees_needed= intval($_POST['employees_needed'] ?? 0);
-    $salary          = floatval($_POST['salary'] ?? 0);
-    $duration        = trim($_POST['duration'] ?? '');
-    $qualification   = trim($_POST['qualification'] ?? '');
-    $description     = trim($_POST['description'] ?? '');
-    $preferred_sex   = trim($_POST['preferred_sex'] ?? '');
-    $sector          = trim($_POST['sector'] ?? '');
+    $company_name     = trim($_POST['company_name'] ?? '');
+    $title            = trim($_POST['title'] ?? '');
+    $employees_needed = intval($_POST['employees_needed'] ?? 0);
+    $salary           = floatval($_POST['salary'] ?? 0);
+    $duration         = trim($_POST['duration'] ?? '');
+    $qualification    = trim($_POST['qualification'] ?? '');
+    $description      = trim($_POST['description'] ?? '');
+    $preferred_sex    = trim($_POST['preferred_sex'] ?? '');
+    $sector           = trim($_POST['sector'] ?? '');
     
     // Check required fields.
-    if ($company_name == '' || $title == '' || $employees_needed <= 0 || $salary <= 0) {
+    if ($company_name === '' || $title === '' || $employees_needed <= 0 || $salary <= 0) {
         $error = "Please fill in all required fields correctly.";
     } else {
         $data = [
-            'company_name'   => $company_name,
-            'title'          => $title,
+            'company_name'    => $company_name,
+            'title'           => $title,
             'employees_needed'=> $employees_needed,
-            'salary'         => $salary,
-            'duration'       => $duration,
-            'qualification'  => $qualification,
-            'description'    => $description,
-            'preferred_sex'  => $preferred_sex,
-            'sector'         => $sector
+            'salary'          => $salary,
+            'duration'        => $duration,
+            'qualification'   => $qualification,
+            'description'     => $description,
+            'preferred_sex'   => $preferred_sex,
+            'sector'          => $sector
         ];
         if (Vacancy::insert($data)) {
             header("Location: adminvacancy.php");
@@ -49,45 +49,52 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Add Vacancy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Use external admin.css for consistent styling -->
   <link rel="stylesheet" href="../../../assets/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../../../components/a-sidebar.php'; ?>
+  <!-- Integrated Sidebar -->
+  <aside class="sidebar">
+    <?php include __DIR__ . '/../../../components/a-sidebar.php'; ?>
+  </aside>
+
   <div class="main-content">
-    <header>
+    <header class="header">
       <h2>Add Vacancy</h2>
     </header>
-    <div class="content">
+    <!-- Use the centralized class for the form container -->
+    <div class="vacancy-add-content">
       <?php if ($error): ?>
-        <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+        <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
       <?php endif; ?>
       <form method="post" action="">
-        <label>Company Name</label><br>
-        <input type="text" name="company_name" required><br><br>
+        <label for="company_name">Company Name *</label>
+        <input type="text" id="company_name" name="company_name" required>
 
-        <label>Job Title</label><br>
-        <input type="text" name="title" required><br><br>
+        <label for="title">Job Title *</label>
+        <input type="text" id="title" name="title" required>
 
-        <label>Number of Employees Required</label><br>
-        <input type="number" name="employees_needed" required><br><br>
+        <label for="employees_needed">Number of Employees Required *</label>
+        <input type="number" id="employees_needed" name="employees_needed" required>
 
-        <label>Salary</label><br>
-        <input type="text" name="salary" required><br><br>
+        <label for="salary">Salary *</label>
+        <input type="text" id="salary" name="salary" required>
 
-        <label>Duration</label><br>
-        <input type="text" name="duration"><br><br>
+        <label for="duration">Duration</label>
+        <input type="text" id="duration" name="duration">
 
-        <label>Qualification/Work Experience</label><br>
-        <textarea name="qualification"></textarea><br><br>
+        <label for="qualification">Qualification/Work Experience</label>
+        <textarea id="qualification" name="qualification"></textarea>
 
-        <label>Job Description</label><br>
-        <textarea name="description"></textarea><br><br>
+        <label for="description">Job Description</label>
+        <textarea id="description" name="description"></textarea>
 
-        <label>Preferred Sex</label><br>
-        <input type="text" name="preferred_sex"><br><br>
+        <label for="preferred_sex">Preferred Sex</label>
+        <input type="text" id="preferred_sex" name="preferred_sex">
 
-        <label>Sector</label><br>
-        <input type="text" name="sector"><br><br>
+        <label for="sector">Sector</label>
+        <input type="text" id="sector" name="sector">
 
         <button type="submit">Add Vacancy</button>
       </form>
