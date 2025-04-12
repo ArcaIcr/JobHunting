@@ -20,7 +20,7 @@
     </li>
     <li>
       <a href="adminapplicants.php" class="<?php echo ($currentFile === 'adminapplicants.php') ? 'active' : ''; ?>">
-        Applicants <span class="badge">0</span>
+        Applicants
       </a>
     </li>
     <li>
