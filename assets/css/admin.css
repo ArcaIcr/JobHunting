@@ -23,27 +23,40 @@
   padding: 0;
 }
 
+/* Set html and body to full viewport height */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: var(--font-family);
   display: flex;
   min-height: 100vh;
+  /* Optional: you might want to set a background color for overall page */
+  background: #f8f9fa;
 }
 
-/* Sidebar Styling */
+/* FIXED SIDEBAR STYLING */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 250px;
+  height: 100vh; /* Full viewport height */
   background: var(--primary-bg);
   color: var(--light-text);
   padding: 20px;
-  height: 100vh;
+  overflow-y: auto; /* Scrolls if content overflows */
 }
 
+/* Sidebar Navigation (inside sidebar) */
 .sidebar-nav h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-/* Sidebar Navigation */
 .sidebar-nav ul {
   list-style: none;
   padding: 0;
@@ -82,7 +95,7 @@ body {
   box-shadow: 1px 0 3px rgba(0, 0, 0, 0.3);
 }
 
-/* New Sidebar User and Logout Styles */
+/* Sidebar User and Logout (if used) */
 .sidebar-user {
   margin-top: 30px;
   padding: 10px;
@@ -93,7 +106,7 @@ body {
 }
 
 .sidebar-logout {
-  margin-top: 250px;
+  margin-top: 250px; /* Adjusted from a high value to keep layout neat */
   text-align: center;
 }
 
@@ -111,21 +124,34 @@ body {
   background: var(--accent-hover);
 }
 
-/* Main Content and Header */
+/* MAIN CONTENT STYLING */
+/* Add left margin equal to sidebar width to prevent overlay */
 .main-content {
+  margin-left: 250px;
   flex: 1;
   padding: 20px;
   background: #f8f9fa;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
+/* HEADER STYLING */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  /* Extra bottom padding if needed */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
-/* Removed the logout from header. Keeping user-info as-is for now. */
+.header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* User Info (if needed in header) */
 .user-info span {
   font-weight: bold;
   margin-right: 10px;
@@ -139,7 +165,7 @@ body {
   border-radius: 3px;
 }
 
-/* Form Styling */
+/* FORM STYLING */
 .form-wrapper {
   margin-bottom: 20px;
   display: flex;
@@ -177,7 +203,7 @@ body {
   color: var(--text-color);
 }
 
-/* Search Input */
+/* SEARCH INPUT */
 .search-input {
   padding: 8px;
   width: 100%;
@@ -187,7 +213,7 @@ body {
   border-radius: 5px;
 }
 
-/* Table Styles */
+/* TABLE STYLES */
 .companies-table {
   width: 100%;
   border-collapse: collapse;
@@ -210,7 +236,7 @@ body {
   background: var(--table-even);
 }
 
-/* Action Buttons */
+/* ACTION BUTTONS */
 .action-btn {
   border: none;
   padding: 5px 10px;
@@ -238,7 +264,7 @@ body {
   background: var(--warning-hover);
 }
 
-/* Responsive Design */
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   body {
     flex-direction: column;
@@ -246,8 +272,10 @@ body {
   .sidebar {
     width: 100%;
     height: auto;
+    position: relative;  /* Stacking on top for mobile; adjust if needed */
   }
   .main-content {
+    margin-left: 0;
     padding: 15px;
   }
   .form-wrapper {
@@ -255,6 +283,7 @@ body {
   }
 }
 
+/* Additional Styles for Vacancy Page (if needed) */
 
 /* Main container styling for the page */
 .content {
@@ -266,17 +295,7 @@ body {
 }
 
 /* Header area with search box */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.header h2 {
-  font-size: 1.5rem;
-  margin: 0;
-}
-.search-box input {
+.header .search-box input {
   width: 220px;
   border-radius: 20px;
   padding: 6px 14px;
@@ -284,7 +303,7 @@ body {
   outline: none;
   transition: border-color 0.3s ease;
 }
-.search-box input:focus {
+.header .search-box input:focus {
   border-color: #3498db;
 }
 
@@ -332,7 +351,6 @@ th, td {
 th {
   white-space: pre-wrap; /* Let column headers wrap if they’re too long */
 }
-/* Lighter zebra striping */
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -340,32 +358,7 @@ tbody tr:hover {
   background-color: #f1f1f1;
 }
 
-/* Action buttons (Edit/Delete) */
-.action-btn {
-  border: none;
-  padding: 6px 10px;
-  margin: 0 2px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #fff;
-  transition: opacity 0.2s ease;
-}
-.action-btn.edit {
-  background-color: #27ae60;
-}
-.action-btn.delete {
-  background-color: #e74c3c;
-}
-.action-btn:hover {
-  opacity: 0.8;
-}
-
-/* 
-  Fully responsive fallback: If the screen is extremely narrow, 
-  we transform the table into a card layout for each row. 
-  This is optional but can help if you want a mobile-friendly look.
-*/
+/* Fully responsive fallback: transforming the table into a card layout on very small screens */
 @media (max-width: 600px) {
   .table-responsive {
     overflow-x: unset; 
@@ -399,3 +392,71 @@ tbody tr:hover {
     margin-right: 10px;
   }
 }
+
+
+
+/* =====================================
+   Add Vacancy Page Specific Styles
+   ===================================== */
+   .vacancy-add-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    max-width: 600px;
+    /* Optional: Center the form container if needed */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .vacancy-add-content h2 {
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    color: var(--text-color);
+  }
+  
+  .vacancy-add-content form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  
+  .vacancy-add-content form input[type="text"],
+  .vacancy-add-content form input[type="number"],
+  .vacancy-add-content form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .vacancy-add-content form input[type="text"]:focus,
+  .vacancy-add-content form input[type="number"]:focus,
+  .vacancy-add-content form textarea:focus {
+    border-color: #3498db;
+  }
+  
+  .vacancy-add-content form button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .vacancy-add-content form button:hover {
+    background-color: #2980b9;
+  }
+  
+  .vacancy-add-content .error-message {
+    color: #e74c3c;
+    margin-bottom: 15px;
+  }
+  
