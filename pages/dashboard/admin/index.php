@@ -1,290 +1,162 @@
 <?php
-// index.php
+// pages/dashboard/admin/index.php
 
-// Include the authentication library
 require_once '../../../lib/auth.php';
-requireRole('admin'); // Ensure the user has the 'admin' role
-
-// Ensure the user is logged in and has the admin role
+requireRole('admin');
 requireAdminLogin();
+
 if (getUserRole() !== 'admin') {
     header("Location: /pages/user/adminlogin.php");
     exit;
 }
+
+// Include the model file for companies
+require_once __DIR__ . '/../../../lib/models/company_model.php';
+
+// ----------------------------------------
+// Handle form submissions (Add & Edit)
+// ----------------------------------------
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['action']) && $_POST['action'] === 'addCompany') {
+        // Use addCompany() from the model
+        addCompany($_POST['name'], $_POST['address'], $_POST['contact']);
+        header("Location: index.php");
+        exit;
+    }
+    if (isset($_POST['action']) && $_POST['action'] === 'editCompany') {
+        // Use updateCompany() from the model
+        updateCompany($_POST['id'], $_POST['name'], $_POST['address'], $_POST['contact']);
+        header("Location: index.php");
+        exit;
+    }
+}
+
+// ----------------------------------------
+// Handle Delete
+// ----------------------------------------
+if (isset($_GET['delete_id'])) {
+    deleteCompany((int)$_GET['delete_id']);
+    header("Location: index.php");
+    exit;
+}
+
+// ----------------------------------------
+// Check for Edit Mode
+// ----------------------------------------
+$editCompany = null;
+if (isset($_GET['edit_id'])) {
+    $editCompany = getCompanyById((int)$_GET['edit_id']);
+}
+
+// ----------------------------------------
+// Fetch all companies for display
+// ----------------------------------------
+$companies = getAllCompanies();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .sidebar {
-            width: 200px;
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            height: 100vh;
-        }
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar ul li {
-            padding: 10px;
-        }
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: block;
-        }
-        .sidebar ul li:hover {
-            background: #34495e;
-        }
-        /* Main content */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-        /* Style for Logout link */
-        .logout-link {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #2c3e50;
-            font-weight: bold;
-        }
-        /* Company Section */
-        .company-section {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .company-section h3 {
-            margin-bottom: 15px;
-        }
-        #addCompany {
-            background: #1abc9c;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #search {
-            float: right;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            color: white;
-        }
-        .edit, .delete {
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .edit {
-            background: #3498db;
-            color: white;
-        }
-        .delete {
-            background: #e74c3c;
-            color: white;
-        }
-        .edit:hover, .delete:hover {
-            opacity: 0.8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Company Management</title>
+  <!-- External CSS Files -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../../assets/css/admin.css">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>ADMIN</h2>
-        <ul>
-            <!-- Update links according to your routing -->
-            <li><a href="index.php" class="active">Cooperation</a></li>
-            <li><a href="adminvacancy.php">Vacancy</a></li>
-            <li><a href="adminemployee.php">Employee</a></li>
-            <li><a href="adminapplicants.php">Applicants <span class="badge">0</span></a></li>
-            <li><a href="adminmanageuser.php">Manage Users</a></li>
-        </ul>
-    </div>
+  <?php include __DIR__ . '/../../../components/a-sidebar.php'; ?>
+  
+  <div class="main-content">
+    <header>
+      <h2>Cooperation</h2>
+      <div class="user-info">
+        <?php if (isset($_SESSION['loggedInUser']['email'])): ?>
+          <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['email']); ?></span>
+        <?php endif; ?>
+        <a class="logout-link" href="../../../components/a-logout.php">Logout</a>
+      </div>
+    </header>
     
-    <div class="main-content">
-        <header>
-            <h2>Cooperation</h2>
-            <div class="user-info">
-                <!-- Display logged-in admin's email -->
-                <?php if (isset($_SESSION['loggedInUser']['email'])): ?>
-                    <span><?php echo htmlspecialchars($_SESSION['loggedInUser']['email']); ?></span>
-                <?php endif; ?>
-                <!-- Logout link -->
-                <a class="logout-link" href="../../../components/a-logout.php">Logout</a>
-            </div>
-        </header>
-        
-        <section class="company-section">
-            <h3>List of Cooperation</h3>
-            <button id="addCompany">+ Add Cooperation</button>
-            <input type="text" id="search" placeholder="Search...">
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Contact No.</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="companyList">
-                    <tr>
-                        <td>IT Company</td>
-                        <td>Kabankalan City</td>
-                        <td>04564123</td>
-                        <td>
-                            <button class="edit"><i class="fas fa-edit"></i></button>
-                            <button class="delete"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Palacios Company</td>
-                        <td>Kabankalan City</td>
-                        <td>0625656899</td>
-                        <td>
-                            <button class="edit"><i class="fas fa-edit"></i></button>
-                            <button class="delete"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const companyList = document.getElementById("companyList");
-            const searchInput = document.getElementById("search");
-            const addCompanyBtn = document.getElementById("addCompany");
-
-            // Sample Company Data (Can be replaced with database integration)
-            let companies = [
-                { name: "IT Company", address: "Kabankalan City", contact: "04564123" },
-                { name: "Palacios Company", address: "Kabankalan City", contact: "0625656899" }
-            ];
-
-            // Function to render the company list
-            function renderCompanies() {
-                companyList.innerHTML = "";
-                companies.forEach((company, index) => {
-                    let row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${company.name}</td>
-                        <td>${company.address}</td>
-                        <td>${company.contact}</td>
-                        <td>
-                            <button class="edit" onclick="editCompany(${index})"><i class="fas fa-edit"></i></button>
-                            <button class="delete" onclick="deleteCompany(${index})"><i class="fas fa-trash"></i></button>
-                        </td>
-                    `;
-                    companyList.appendChild(row);
-                });
-            }
-
-            // Function to delete a company
-            window.deleteCompany = function (index) {
-                if (confirm("Are you sure you want to delete this company?")) {
-                    companies.splice(index, 1);
-                    renderCompanies();
-                }
-            };
-
-            // Function to edit a company
-            window.editCompany = function (index) {
-                let newName = prompt("Enter new company name:", companies[index].name);
-                let newAddress = prompt("Enter new address:", companies[index].address);
-                let newContact = prompt("Enter new contact number:", companies[index].contact);
-
-                if (newName && newAddress && newContact) {
-                    companies[index] = { name: newName, address: newAddress, contact: newContact };
-                    renderCompanies();
-                }
-            };
-
-            // Function to add a new company
-            addCompanyBtn.addEventListener("click", function () {
-                let name = prompt("Enter company name:");
-                let address = prompt("Enter company address:");
-                let contact = prompt("Enter contact number:");
-
-                if (name && address && contact) {
-                    companies.push({ name, address, contact });
-                    renderCompanies();
-                } else {
-                    alert("All fields are required!");
-                }
-            });
-
-            // Function to filter/search companies
-            searchInput.addEventListener("input", function () {
-                let filter = searchInput.value.toLowerCase();
-                let rows = companyList.getElementsByTagName("tr");
-
-                for (let row of rows) {
-                    let nameCell = row.getElementsByTagName("td")[0];
-                    if (nameCell) {
-                        let name = nameCell.textContent.toLowerCase();
-                        row.style.display = name.includes(filter) ? "" : "none";
-                    }
-                }
-            });
-
-            // Initial render
-            renderCompanies();
-        });
-    </script>
+    <section class="company-section">
+      <h3>List of Cooperation</h3>
+      
+      <?php if ($editCompany): ?>
+      <!-- Edit Form -->
+      <div class="form-wrapper">
+        <form method="POST">
+          <input type="hidden" name="action" value="editCompany">
+          <input type="hidden" name="id" value="<?php echo htmlspecialchars($editCompany['id']); ?>">
+          <input type="text" name="name" value="<?php echo htmlspecialchars($editCompany['name']); ?>" placeholder="Company Name" required>
+          <input type="text" name="address" value="<?php echo htmlspecialchars($editCompany['address']); ?>" placeholder="Address" required>
+          <input type="text" name="contact" value="<?php echo htmlspecialchars($editCompany['contact']); ?>" placeholder="Contact No." required>
+          <button type="submit" id="editCompany">Update Company</button>
+          <a href="index.php" style="margin-left:10px;">Cancel</a>
+        </form>
+      </div>
+      <?php else: ?>
+      <!-- Add Form -->
+      <div class="form-wrapper">
+        <form method="POST">
+          <input type="hidden" name="action" value="addCompany">
+          <input type="text" name="name" placeholder="Company Name" required>
+          <input type="text" name="address" placeholder="Address" required>
+          <input type="text" name="contact" placeholder="Contact No." required>
+          <button type="submit" id="addCompany">+ Add Cooperation</button>
+        </form>
+      </div>
+      <?php endif; ?>
+      
+      <!-- Optional Client-Side Search -->
+      <input type="text" id="search" placeholder="Search...">
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Contact No.</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="companyList">
+          <?php if ($companies): ?>
+            <?php foreach ($companies as $company): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($company['name']); ?></td>
+                <td><?php echo htmlspecialchars($company['address']); ?></td>
+                <td><?php echo htmlspecialchars($company['contact']); ?></td>
+                <td>
+                  <a class="action-btn edit" href="index.php?edit_id=<?php echo (int)$company['id']; ?>">Edit</a>
+                  <a class="action-btn delete" href="index.php?delete_id=<?php echo (int)$company['id']; ?>" onclick="return confirm('Are you sure you want to delete this company?');">Delete</a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <tr><td colspan="4">No companies found.</td></tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </section>
+  </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search");
+      const companyList = document.getElementById("companyList");
+  
+      searchInput.addEventListener("input", function () {
+        let filter = searchInput.value.toLowerCase();
+        let rows = companyList.getElementsByTagName("tr");
+  
+        for (let row of rows) {
+          let nameCell = row.getElementsByTagName("td")[0];
+          if (nameCell) {
+            let name = nameCell.textContent.toLowerCase();
+            row.style.display = name.includes(filter) ? "" : "none";
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>

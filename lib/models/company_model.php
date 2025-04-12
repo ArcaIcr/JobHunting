@@ -20,9 +20,7 @@ function getPDO() {
     return $pdo;
 }
 
-/**
- * Fetch the company profile for a given employer.
- */
+/* Existing functions for employer_profiles... */
 function getCompanyProfile($userId) {
     $pdo = getPDO();
     $sql = "SELECT * FROM employer_profiles WHERE user_id = ?";
@@ -31,9 +29,6 @@ function getCompanyProfile($userId) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-/**
- * Update the company profile for a given employer.
- */
 function updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename) {
     $pdo = getPDO();
     $sql = "UPDATE employer_profiles
@@ -43,9 +38,6 @@ function updateCompanyProfile($userId, $companyName, $companyWebsite, $companyDe
     return $stmt->execute([$companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename, $userId]);
 }
 
-/**
- * Create a new company profile for a given employer.
- */
 function createCompanyProfile($userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename) {
     $pdo = getPDO();
     $sql = "INSERT INTO employer_profiles (user_id, company_name, company_website, company_description, location, contact_email, contact_phone, logo)
@@ -53,3 +45,57 @@ function createCompanyProfile($userId, $companyName, $companyWebsite, $companyDe
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$userId, $companyName, $companyWebsite, $companyDescription, $location, $contactEmail, $contactPhone, $logoFilename]);
 }
+
+/* --- New functions for handling companies table --- */
+
+/**
+ * Fetches all companies from the companies table.
+ */
+function getAllCompanies() {
+    $pdo = getPDO();
+    $sql = "SELECT * FROM companies ORDER BY created_at DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Gets a single company by its ID.
+ */
+function getCompanyById($id) {
+    $pdo = getPDO();
+    $sql = "SELECT * FROM companies WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Adds a new company to the companies table.
+ */
+function addCompany($name, $address, $contact) {
+    $pdo = getPDO();
+    $sql = "INSERT INTO companies (name, address, contact) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$name, $address, $contact]);
+}
+
+/**
+ * Updates an existing company.
+ */
+function updateCompany($id, $name, $address, $contact) {
+    $pdo = getPDO();
+    $sql = "UPDATE companies SET name = ?, address = ?, contact = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$name, $address, $contact, $id]);
+}
+
+/**
+ * Deletes a company.
+ */
+function deleteCompany($id) {
+    $pdo = getPDO();
+    $sql = "DELETE FROM companies WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$id]);
+}
+?>
