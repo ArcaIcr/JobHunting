@@ -1,4 +1,4 @@
-<!-- includes/sidebar.php -->
+<!-- components/a-sidebar.php -->
 <div class="sidebar">
     <h2>ADMIN</h2>
     <ul>
