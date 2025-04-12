@@ -3,13 +3,39 @@
 
 require_once __DIR__ . '/../db.php';
 
-
 function getAllUsers() {
     $pdo = getPDO();
-    $sql = "SELECT id, username, email, role, created_at FROM users";
+    // Only select columns that exist in your table
+    $sql = "SELECT id, username, email, role, created_at, avatar FROM users";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function createUser($username, $email, $role, $password = 'password123') {
+    // You can handle hashing of the default password here or require it as a param
+    $pdo = getPDO();
+    // Insert only the columns that exist
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO users (username, email, role, password) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$username, $email, $role, $hashedPassword]);
+}
+
+function updateUser($userId, $username, $email, $role) {
+    $pdo = getPDO();
+    $sql = "UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$username, $email, $role, $userId]);
+}
+
+function deleteUser($userId) {
+    $pdo = getPDO();
+    $sql = "DELETE FROM users WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$userId]);
+}
+
+// Additional functions for updating password, avatar, etc., as needed.
 
 
 function getUserById($userId) {

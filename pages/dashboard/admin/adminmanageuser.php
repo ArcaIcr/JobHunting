@@ -1,10 +1,58 @@
 <?php
 // adminmanageuser.php
 
-// 1. Include our user model
 require_once __DIR__ . '/../../../lib/models/user_model.php';
 
-// 2. Fetch all users from the database
+$message = "";
+
+// Process POST requests for Add or Edit actions.
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $action   = $_POST['action'] ?? '';
+    $username = trim($_POST['username'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
+    $role     = trim($_POST['role'] ?? '');
+    $password = trim($_POST['password'] ?? '');  // New password field
+
+    if ($action === 'add') {
+        // In "add" mode, require a password.
+        if (empty($password)) {
+            $message = "Password is required for adding a new user.";
+        } else {
+            if (createUser($username, $email, $role, $password)) {
+                $message = "User added successfully!";
+            } else {
+                $message = "Error adding user.";
+            }
+        }
+    } elseif ($action === 'edit') {
+        $userId = $_POST['userId'] ?? '';
+        if ($userId && updateUser($userId, $username, $email, $role)) {
+            $message = "User updated successfully!";
+            // If a new password is provided during edit, update it.
+            if (!empty($password)) {
+                if (updateUserPassword($userId, $password)) {
+                    $message .= " Password updated successfully!";
+                } else {
+                    $message .= " However, error updating password.";
+                }
+            }
+        } else {
+            $message = "Error updating user.";
+        }
+    }
+}
+
+// Process GET request for Delete action.
+if (isset($_GET['delete_id'])) {
+    $deleteId = $_GET['delete_id'];
+    if (deleteUser($deleteId)) {
+        $message = "User deleted successfully!";
+    } else {
+        $message = "Error deleting user.";
+    }
+}
+
+// Retrieve user data from the database.
 $users = getAllUsers();
 ?>
 <!DOCTYPE html>
@@ -13,7 +61,7 @@ $users = getAllUsers();
   <meta charset="UTF-8">
   <title>Manage Users</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
     body {
@@ -48,15 +96,10 @@ $users = getAllUsers();
     .sidebar ul li:hover {
       background: #34495e;
     }
-    .main-content {
+    .container.main-content {
       flex: 1;
       padding: 20px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+      margin: 20px auto;
     }
     .modal {
       display: none;
@@ -80,142 +123,133 @@ $users = getAllUsers();
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-      <h2>ADMIN</h2>
-      <ul>
-          <li><a href="adminhome.php" class="active">Cooperation</a></li>
-          <li><a href="adminvacancy.php">Vacancy</a></li>
-          <li><a href="adminemployee.php">Employee</a></li>
-          <li><a href="adminapplicants.php">Applicants <span class="badge"></span></a></li>
-          <li><a href="adminmanageuser.php">Manage Users</a></li>
-      </ul>
+    <h2>ADMIN</h2>
+    <ul>
+      <li><a href="adminhome.php">Cooperation</a></li>
+      <li><a href="adminvacancy.php">Vacancy</a></li>
+      <li><a href="adminemployee.php">Employee</a></li>
+      <li><a href="adminapplicants.php">Applicants</a></li>
+      <li><a href="adminmanageuser.php" class="active">Manage Users</a></li>
+    </ul>
   </div>
 
   <!-- Main Content -->
   <div class="container mt-5 main-content">
-      <h2>List of Users</h2>
-      <!-- Button that triggers the modal for adding a new user (client-side only for now) -->
-      <button class="btn btn-primary mb-3" onclick="openAddUserModal()">Add User</button>
+    <h2>List of Users</h2>
+    <?php if (!empty($message)): ?>
+      <div class="alert alert-info"><?php echo htmlspecialchars($message); ?></div>
+    <?php endif; ?>
 
-      <!-- Table of Users Retrieved from the Database -->
-      <table class="table table-bordered">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Action (Client-Side)</th>
-              </tr>
-          </thead>
-          <tbody id="userTable">
-              <?php if (!empty($users)): ?>
-                  <?php foreach ($users as $user): ?>
-                      <tr>
-                          <td><?php echo htmlspecialchars($user['id']); ?></td>
-                          <td><?php echo htmlspecialchars($user['username']); ?></td>
-                          <td><?php echo htmlspecialchars($user['email']); ?></td>
-                          <td><?php echo htmlspecialchars($user['role']); ?></td>
-                          <td>
-                              <!-- The Edit/Delete buttons are still purely client-side. -->
-                              <button class="btn btn-warning btn-sm" onclick="editUser(this)">Edit</button>
-                              <button class="btn btn-danger btn-sm" onclick="deleteUser(this)">Delete</button>
-                          </td>
-                      </tr>
-                  <?php endforeach; ?>
-              <?php else: ?>
-                  <tr>
-                      <td colspan="5">No users found.</td>
-                  </tr>
-              <?php endif; ?>
-          </tbody>
-      </table>
+    <button class="btn btn-primary mb-3" onclick="openAddUserModal()">Add User</button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (!empty($users)): ?>
+          <?php foreach ($users as $user): ?>
+            <tr>
+              <td><?php echo htmlspecialchars($user['id']); ?></td>
+              <td><?php echo htmlspecialchars($user['username']); ?></td>
+              <td><?php echo htmlspecialchars($user['email']); ?></td>
+              <td><?php echo htmlspecialchars($user['role']); ?></td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="openEditUserModal(
+                  '<?php echo $user['id']; ?>',
+                  '<?php echo htmlspecialchars($user['username'], ENT_QUOTES); ?>',
+                  '<?php echo htmlspecialchars($user['email'], ENT_QUOTES); ?>',
+                  '<?php echo htmlspecialchars($user['role'], ENT_QUOTES); ?>'
+                )">Edit</button>
+                <a href="adminmanageuser.php?delete_id=<?php echo $user['id']; ?>" 
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this user?');">
+                   Delete
+                </a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="5">No users found.</td></tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
   </div>
 
-  <!-- Add/Edit User Modal -->
-  <div class="modal" id="userModal" tabindex="-1">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="modalTitle">Add User</h5>
-                  <button type="button" class="btn-close" onclick="closeModal()"></button>
-              </div>
-              <div class="modal-body">
-                  <input type="hidden" id="editIndex">
-                  <label>ID:</label>
-                  <input type="text" id="accountID" class="form-control" required>
-                  <label>Account Name:</label>
-                  <input type="text" id="accountName" class="form-control" required>
-                  <label>Username:</label>
-                  <input type="text" id="username" class="form-control" required>
-                  <label>Role:</label>
-                  <input type="text" id="role" class="form-control" required>
-              </div>
-              <div class="modal-footer">
-                  <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                  <button class="btn btn-success" onclick="saveUser()">Save</button>
-              </div>
+  <!-- Modal for Add/Edit User -->
+  <div class="modal" id="userModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Form submission posts back to this same file -->
+        <form method="POST" action="adminmanageuser.php">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Add User</h5>
+            <button type="button" class="btn-close" onclick="closeModal()"></button>
           </div>
+          <div class="modal-body">
+            <!-- Hidden fields -->
+            <input type="hidden" name="userId" id="userId">
+            <input type="hidden" name="action" id="action" value="add">
+            
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="role" class="form-label">Role:</label>
+              <input type="text" name="role" id="role" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <!-- For "add" mode this field is required; for editing, leave blank to keep current password -->
+              <input type="password" name="password" id="password" class="form-control" placeholder="Enter new password (leave blank to keep unchanged)">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </form>
       </div>
+    </div>
   </div>
 
   <script>
-      function openAddUserModal() {
-          document.getElementById("modalTitle").innerText = "Add User";
-          document.getElementById("editIndex").value = "";
-          document.getElementById("accountID").value = "";
-          document.getElementById("accountName").value = "";
-          document.getElementById("username").value = "";
-          document.getElementById("role").value = "";
-          document.getElementById("userModal").style.display = "flex";
-      }
+    function openAddUserModal() {
+      document.getElementById('modalTitle').innerText = 'Add User';
+      document.getElementById('action').value = 'add';
+      document.getElementById('userId').value = '';
+      document.getElementById('username').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('role').value = '';
+      document.getElementById('password').value = ''; // Ensure password field is empty
+      document.getElementById('userModal').style.display = 'flex';
+    }
 
-      function closeModal() {
-          document.getElementById("userModal").style.display = "none";
-      }
+    function openEditUserModal(id, username, email, role) {
+      document.getElementById('modalTitle').innerText = 'Edit User';
+      document.getElementById('action').value = 'edit';
+      document.getElementById('userId').value = id;
+      document.getElementById('username').value = username;
+      document.getElementById('email').value = email;
+      document.getElementById('role').value = role;
+      // Leave password field blank – if user wants to update, they can enter a new one.
+      document.getElementById('password').value = '';
+      document.getElementById('userModal').style.display = 'flex';
+    }
 
-      // Client-side only for now
-      function saveUser() {
-          let accountID = document.getElementById("accountID").value;
-          let accountName = document.getElementById("accountName").value;
-          let username = document.getElementById("username").value;
-          let role = document.getElementById("role").value;
-          let editIndex = document.getElementById("editIndex").value;
-          let table = document.getElementById("userTable");
-
-          if (editIndex === "") {
-              let row = table.insertRow();
-              row.innerHTML = `<td>${accountID}</td>
-                               <td>${username}</td>
-                               <td>[Email Placeholder]</td>
-                               <td>${role}</td>
-                               <td><button class='btn btn-warning btn-sm' onclick='editUser(this)'>Edit</button>
-                                    <button class='btn btn-danger btn-sm' onclick='deleteUser(this)'>Delete</button></td>`;
-          } else {
-              let row = table.rows[editIndex];
-              row.cells[0].innerText = accountID;
-              row.cells[1].innerText = username;
-              // row.cells[2].innerText = ???; // Email logic, if needed
-              row.cells[3].innerText = role;
-          }
-          closeModal();
-      }
-
-      function editUser(btn) {
-          let row = btn.parentElement.parentElement;
-          document.getElementById("modalTitle").innerText = "Edit User";
-          document.getElementById("editIndex").value = row.rowIndex - 1;
-          // Fill the modal fields based on table cells
-          document.getElementById("accountID").value = row.cells[0].innerText;
-          document.getElementById("username").value = row.cells[1].innerText;
-          // row.cells[2] is the email
-          document.getElementById("role").value = row.cells[3].innerText;
-          document.getElementById("userModal").style.display = "flex";
-      }
-
-      function deleteUser(btn) {
-          let row = btn.parentElement.parentElement;
-          row.remove();
-      }
+    function closeModal() {
+      document.getElementById('userModal').style.display = 'none';
+    }
   </script>
 </body>
 </html>
