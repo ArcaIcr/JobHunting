@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $preferred_sex    = trim($_POST['preferred_sex'] ?? '');
     $sector           = trim($_POST['sector'] ?? '');
     
-    if ($company_name == '' || $title == '' || $employees_needed <= 0 || $salary <= 0) {
+    if ($company_name === '' || $title === '' || $employees_needed <= 0 || $salary <= 0) {
         $error = "Please fill in all required fields correctly.";
     } else {
         $data = [
@@ -54,45 +54,52 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
   <meta charset="UTF-8">
   <title>Edit Vacancy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Use external admin.css for consistent styling -->
   <link rel="stylesheet" href="../../../assets/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../../../components/a-sidebar.php'; ?>
+  <!-- Integrated Sidebar -->
+  <aside class="sidebar">
+    <?php include __DIR__ . '/../../../components/a-sidebar.php'; ?>
+  </aside>
+
   <div class="main-content">
-    <header>
+    <header class="header">
       <h2>Edit Vacancy</h2>
     </header>
-    <div class="content">
+    <!-- Use the centralized class for form container -->
+    <div class="vacancy-add-content">
       <?php if ($error): ?>
-        <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+        <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
       <?php endif; ?>
       <form method="post" action="">
-        <label>Company Name</label><br>
-        <input type="text" name="company_name" value="<?php echo htmlspecialchars($vacancy['company_name']); ?>" required><br><br>
+        <label for="company_name">Company Name *</label>
+        <input type="text" id="company_name" name="company_name" value="<?php echo htmlspecialchars($vacancy['company_name']); ?>" required>
 
-        <label>Job Title</label><br>
-        <input type="text" name="title" value="<?php echo htmlspecialchars($vacancy['title']); ?>" required><br><br>
+        <label for="title">Job Title *</label>
+        <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($vacancy['title']); ?>" required>
 
-        <label>Number of Employees Required</label><br>
-        <input type="number" name="employees_needed" value="<?php echo htmlspecialchars($vacancy['employees_needed']); ?>" required><br><br>
+        <label for="employees_needed">Number of Employees Required *</label>
+        <input type="number" id="employees_needed" name="employees_needed" value="<?php echo htmlspecialchars($vacancy['employees_needed']); ?>" required>
 
-        <label>Salary</label><br>
-        <input type="text" name="salary" value="<?php echo htmlspecialchars($vacancy['salary']); ?>" required><br><br>
+        <label for="salary">Salary *</label>
+        <input type="text" id="salary" name="salary" value="<?php echo htmlspecialchars($vacancy['salary']); ?>" required>
 
-        <label>Duration</label><br>
-        <input type="text" name="duration" value="<?php echo htmlspecialchars($vacancy['duration']); ?>"><br><br>
+        <label for="duration">Duration</label>
+        <input type="text" id="duration" name="duration" value="<?php echo htmlspecialchars($vacancy['duration']); ?>">
 
-        <label>Qualification/Experience</label><br>
-        <textarea name="qualification"><?php echo htmlspecialchars($vacancy['qualification']); ?></textarea><br><br>
+        <label for="qualification">Qualification/Experience</label>
+        <textarea id="qualification" name="qualification"><?php echo htmlspecialchars($vacancy['qualification']); ?></textarea>
 
-        <label>Job Description</label><br>
-        <textarea name="description"><?php echo htmlspecialchars($vacancy['description']); ?></textarea><br><br>
+        <label for="description">Job Description</label>
+        <textarea id="description" name="description"><?php echo htmlspecialchars($vacancy['description']); ?></textarea>
 
-        <label>Preferred Sex</label><br>
-        <input type="text" name="preferred_sex" value="<?php echo htmlspecialchars($vacancy['preferred_sex']); ?>"><br><br>
+        <label for="preferred_sex">Preferred Sex</label>
+        <input type="text" id="preferred_sex" name="preferred_sex" value="<?php echo htmlspecialchars($vacancy['preferred_sex']); ?>">
 
-        <label>Sector</label><br>
-        <input type="text" name="sector" value="<?php echo htmlspecialchars($vacancy['sector']); ?>"><br><br>
+        <label for="sector">Sector</label>
+        <input type="text" id="sector" name="sector" value="<?php echo htmlspecialchars($vacancy['sector']); ?>">
 
         <button type="submit">Update Vacancy</button>
       </form>
